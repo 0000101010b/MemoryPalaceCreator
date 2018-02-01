@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryPalaceCreator", "MemoryPalaceCreator.csproj", "{0AB09294-52AD-3D3F-F728-682522D98650}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryPalaceCreator.Plugins", "MemoryPalaceCreator.Plugins.csproj", "{D46A4EB7-8864-47A5-7835-6D9EAA555FE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MemoryPalaceCreator.Editor", "MemoryPalaceCreator.Editor.csproj", "{9212D1ED-CB5C-282D-C922-6774BBC89235}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0AB09294-52AD-3D3F-F728-682522D98650}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AB09294-52AD-3D3F-F728-682522D98650}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AB09294-52AD-3D3F-F728-682522D98650}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AB09294-52AD-3D3F-F728-682522D98650}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D46A4EB7-8864-47A5-7835-6D9EAA555FE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D46A4EB7-8864-47A5-7835-6D9EAA555FE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D46A4EB7-8864-47A5-7835-6D9EAA555FE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D46A4EB7-8864-47A5-7835-6D9EAA555FE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9212D1ED-CB5C-282D-C922-6774BBC89235}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9212D1ED-CB5C-282D-C922-6774BBC89235}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9212D1ED-CB5C-282D-C922-6774BBC89235}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9212D1ED-CB5C-282D-C922-6774BBC89235}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
