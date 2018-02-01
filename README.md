@@ -5,7 +5,7 @@ BSP map generator
 <img alt="MPC" src="/I.JPG" width="400" />
 <img alt="MPC" src="/MPC.JPG" width="400" />
 
-voronoi map generator to be added...
+Voronoi map generator to be added...
 
 
 <img alt="MPC" src="/MPC_V.png" width="600" />
