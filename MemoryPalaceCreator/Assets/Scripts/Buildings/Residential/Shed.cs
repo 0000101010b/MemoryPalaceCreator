@@ -9,10 +9,6 @@ public class Shed : Residential {
  
     public void ShedConstructor(Vector3 _startPos, Vector2 _buildSpace, Vector3 xDir, Vector3 yDir, float _height)
     {
-        //create parent gamobject
-        //shedGameobject = new GameObject("Shed");
-
-
         height = _height;
         BuildingsConstructor(_buildSpace, _startPos);//base constructor
 
@@ -54,30 +50,30 @@ public class Shed : Residential {
         
 
         //north wall
-        outsideWalls.Add(MakePlane(northWallpos, yDir, buildSpace.x, height, 1.0f, 1.0f, rect[0], rectH[0], rectW[0]));
-        insideWalls.Add(MakePlane(northWallpos + (yDir * 1.0f), -yDir, buildSpace.x-2f, height, 1.0f, 1.0f,rect[0],rectH[0],rectW[0]));
+        outsideWalls.Add(MakePlane(false,northWallpos, yDir, buildSpace.x, height, 1.0f, 1.0f, rect[0], rectH[0], rectW[0]));
+        insideWalls.Add(MakePlane(true,northWallpos + (yDir * 1.0f), -yDir, buildSpace.x-2f, height, 1.0f, 1.0f,rect[0],rectH[0],rectW[0]));
 
         //south wall
-        outsideWalls.Add(MakePlane(southWallpos,- yDir, buildSpace.x, height, 1.0f, 1.0f, rect[1], rectH[1], rectW[1]));
-        insideWalls.Add(MakePlane(southWallpos - (yDir * 1.0f), yDir, buildSpace.x-2f, height, 1.0f, 1.0f, rect[1], rectH[1], rectW[1]));
+        outsideWalls.Add(MakePlane(false,southWallpos,- yDir, buildSpace.x, height, 1.0f, 1.0f, rect[1], rectH[1], rectW[1]));
+        insideWalls.Add(MakePlane(true,southWallpos - (yDir * 1.0f), yDir, buildSpace.x-2f, height, 1.0f, 1.0f, rect[1], rectH[1], rectW[1]));
 
         //eastWall
-        outsideWalls.Add(MakePlane(eastWallpos, xDir, buildSpace.y, height, 1.0f, 1.0f, rect[2], rectH[2], rectW[2]));
-        insideWalls.Add(MakePlane(eastWallpos + (xDir * 1.0f), -xDir, buildSpace.y-2f, height, 1.0f, 1.0f, rect[2], rectH[2], rectW[2]));
+        outsideWalls.Add(MakePlane(false,eastWallpos, xDir, buildSpace.y, height, 1.0f, 1.0f, rect[2], rectH[2], rectW[2]));
+        insideWalls.Add(MakePlane(true,eastWallpos + (xDir * 1.0f), -xDir, buildSpace.y-2f, height, 1.0f, 1.0f, rect[2], rectH[2], rectW[2]));
 
         //westWall
-        outsideWalls.Add(MakePlane(westWallpos, -xDir, buildSpace.y, height, 1.0f, 1.0f, rect[3], rectH[3], rectW[3]));
-        insideWalls.Add(MakePlane(westWallpos - (xDir * 1.0f), xDir, buildSpace.y-2f, height, 1.0f, 1.0f, rect[3], rectH[3], rectW[3]));
+        outsideWalls.Add(MakePlane(false,westWallpos, -xDir, buildSpace.y, height, 1.0f, 1.0f, rect[3], rectH[3], rectW[3]));
+        insideWalls.Add(MakePlane(true,westWallpos - (xDir * 1.0f), xDir, buildSpace.y-2f, height, 1.0f, 1.0f, rect[3], rectH[3], rectW[3]));
 
         
-        GameObject ceiling = MakePlane(startPos + new Vector3(0, height, 0) + ((buildSpace.y / 2) * yDir )+ ((buildSpace.x/2) * xDir),
+        GameObject ceiling = MakePlane(false,startPos + new Vector3(0, height, 0) + ((buildSpace.y / 2) * yDir )+ ((buildSpace.x/2) * xDir),
             xDir, buildSpace.y, buildSpace.x, 1f, 1f, Vector2.zero, 0, 0);
         ceiling.name = "ceiling";
         ceiling.transform.Rotate(yDir, -90.0f,Space.World);
         ceiling.transform.SetParent(shedGameobject.transform);
         //for polygrid yDir plus transform position
 
-        GameObject roof = MakePlane(startPos + new Vector3(0, height, 0) + (buildSpace.y / 2) * yDir + (buildSpace.x / 2) * xDir,
+        GameObject roof = MakePlane(false,startPos + new Vector3(0, height, 0) + (buildSpace.y / 2) * yDir + (buildSpace.x / 2) * xDir,
         xDir,
         buildSpace.y,
         buildSpace.x,
@@ -167,11 +163,12 @@ public class Shed : Residential {
     // Use this for initialization
 
 
-    GameObject MakePlane(Vector3 pos,Vector3 facing,float lenght,float height,float divideByX,float divideByY,Vector2 rect,float rectH,float rectW)
+    GameObject MakePlane(bool invert,Vector3 pos,Vector3 facing,float lenght,float height,float divideByX,float divideByY,Vector2 rect,float rectH,float rectW)
     {
         //Quaternion q=Quaternion.Euler(facing.x,facing.y,facing.z);
         GameObject wall = Instantiate(new GameObject(), pos, Quaternion.identity) as GameObject;
         WallMesh wallMesh = wall.AddComponent<WallMesh>();
+        wallMesh.invert = invert;
         wallMesh.rect = rect;
         wallMesh.rectH = rectH;
         wallMesh.rectW = rectW;
