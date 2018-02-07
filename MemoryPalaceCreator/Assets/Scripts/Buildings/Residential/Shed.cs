@@ -45,27 +45,55 @@ public class Shed : Residential {
             rectW[doorSide] = 1f;
             rectH[doorSide] = 2f;
         }
- 
 
-        
+
+        GameObject doorway= new GameObject("D");
 
         //north wall
-        outsideWalls.Add(MakePlane(false,northWallpos, yDir, buildSpace.x, height, 1.0f, 1.0f, rect[0], rectH[0], rectW[0]));
+        outsideWalls.Add(MakePlane(false,northWallpos, yDir,buildSpace.x, height, 1.0f, 1.0f, rect[0], rectH[0], rectW[0]));
         insideWalls.Add(MakePlane(true,northWallpos + (yDir * 1.0f), -yDir, buildSpace.x-2f, height, 1.0f, 1.0f,rect[0],rectH[0],rectW[0]));
+        if (rectH[0] == 2)
+        { 
+            Doorway dw=doorway.AddComponent<Doorway>();
+            dw.Build();
+            doorway.transform.rotation *= Quaternion.AngleAxis(90, Vector3.up);
+            doorway.transform.position = northWallpos + new Vector3(0.5f,-.5f,-(rect[0].x - (buildSpace.x / 2)+.5f) );
+        }
 
         //south wall
         outsideWalls.Add(MakePlane(false,southWallpos,- yDir, buildSpace.x, height, 1.0f, 1.0f, rect[1], rectH[1], rectW[1]));
         insideWalls.Add(MakePlane(true,southWallpos - (yDir * 1.0f), yDir, buildSpace.x-2f, height, 1.0f, 1.0f, rect[1], rectH[1], rectW[1]));
+        if (rectH[1] == 2)
+        {
+            Doorway dw = doorway.AddComponent<Doorway>();
+            dw.Build();
+            doorway.transform.rotation *= Quaternion.AngleAxis(90, Vector3.up);
+            doorway.transform.position = southWallpos+ new Vector3(-0.5f, -.5f, (rect[1].x - (buildSpace.x / 2) + .5f));
+        }
 
         //eastWall
         outsideWalls.Add(MakePlane(false,eastWallpos, xDir, buildSpace.y, height, 1.0f, 1.0f, rect[2], rectH[2], rectW[2]));
         insideWalls.Add(MakePlane(true,eastWallpos + (xDir * 1.0f), -xDir, buildSpace.y-2f, height, 1.0f, 1.0f, rect[2], rectH[2], rectW[2]));
+        
+        if (rectH[2] == 2)
+        {
+            Doorway dw = doorway.AddComponent<Doorway>();
+            dw.Build();
+            doorway.transform.position = eastWallpos + new Vector3(rect[2].x - (buildSpace.y / 2)+.5f, -.5f,.5f);
+        }
 
         //westWall
         outsideWalls.Add(MakePlane(false,westWallpos, -xDir, buildSpace.y, height, 1.0f, 1.0f, rect[3], rectH[3], rectW[3]));
         insideWalls.Add(MakePlane(true,westWallpos - (xDir * 1.0f), xDir, buildSpace.y-2f, height, 1.0f, 1.0f, rect[3], rectH[3], rectW[3]));
 
-        
+        if (rectH[3] == 2)
+        {
+            Doorway dw = doorway.AddComponent<Doorway>();
+            dw.Build();
+            doorway.transform.position = westWallpos + new Vector3(-rect[3].x + (buildSpace.y / 2) - .5f, -.5f, -.5f);
+        }
+
+
         GameObject ceiling = MakePlane(false,startPos + new Vector3(0, height, 0) + ((buildSpace.y / 2) * yDir )+ ((buildSpace.x/2) * xDir),
             xDir, buildSpace.y, buildSpace.x, 1f, 1f, Vector2.zero, 0, 0);
         ceiling.name = "ceiling";

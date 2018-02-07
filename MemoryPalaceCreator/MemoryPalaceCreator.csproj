@@ -110,6 +110,7 @@
     <Compile Include="Assets\Scripts\Buildings\Residential.cs" />
     <Compile Include="Assets\Scripts\Buildings\Residential\Shed.cs" />
     <Compile Include="Assets\Scripts\Buildings\Residential\ThatchedHouse.cs" />
+    <Compile Include="Assets\Scripts\BuildingTools\Doorway.cs" />
     <Compile Include="Assets\Scripts\BuildingTools\WallMesh.cs" />
     <Compile Include="Assets\Scripts\Grids\BSPGrid.cs" />
     <Compile Include="Assets\Scripts\Grids\Grid.cs" />

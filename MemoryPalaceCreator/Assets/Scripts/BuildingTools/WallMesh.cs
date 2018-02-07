@@ -168,9 +168,9 @@ public class WallMesh : MonoBehaviour
 
         lRect.x = rect.x - (xMagnitude / 2);
 
-        Debug.Log(xMagnitude-rect.x-rectW);
+    
         if (invert)
-            lRect.x = (xMagnitude - rect.x - rectW) - (xMagnitude / 2);
+            lRect.x = (xMagnitude - rect.x - rectW + xDividedBy) - (xMagnitude / 2);
 
 
 

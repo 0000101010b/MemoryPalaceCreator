@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class Buildings:MonoBehaviour
+public abstract class Buildings: MonoBehaviour
 {
     public Vector2 buildSpace;
     public Vector3 startPos;
