@@ -13,6 +13,8 @@ public class CreateTriangle : MonoBehaviour {
 	void Start () {
         Mesh mesh = new Mesh();
         MeshRenderer meshRenderer= gameObject.AddComponent<MeshRenderer>();
+        meshRenderer.receiveShadows = false;
+        meshRenderer.shadowCastingMode =0;
         gameObject.AddComponent<MeshFilter>().mesh = mesh;
         mesh.vertices = newVerties;
         //new Vector3[] { new Vector3(-0.5f, 0,-0.5f ), new Vector3(0, 0, 0.5f), new Vector3(0.5f, 0, -0.5f) };

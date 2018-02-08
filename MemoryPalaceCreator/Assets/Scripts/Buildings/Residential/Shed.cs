@@ -12,6 +12,7 @@ public class Shed : Residential {
         height = _height;
         BuildingsConstructor(_buildSpace, _startPos);//base constructor
 
+        
         Vector3 northWallpos = startPos + new Vector3(0, height / 2, 0) + (buildSpace.x / 2) * xDir;
         Vector3 eastWallpos = startPos + new Vector3(0, height / 2, 0) + (buildSpace.y / 2) * yDir;
         Vector3 westWallpos = startPos + new Vector3(0, height / 2, 0) + (buildSpace.y / 2) * yDir + (buildSpace.x * xDir);
@@ -101,6 +102,12 @@ public class Shed : Residential {
         ceiling.transform.SetParent(shedGameobject.transform);
         //for polygrid yDir plus transform position
 
+
+
+        GameObject light=GameObject.Find("SpawnObjects").GetComponent<Prefabs>().prefabs[(int)ePrefabs.LightBulb];
+
+        
+
         GameObject roof = MakePlane(false,startPos + new Vector3(0, height, 0) + (buildSpace.y / 2) * yDir + (buildSpace.x / 2) * xDir,
         xDir,
         buildSpace.y,
@@ -109,6 +116,8 @@ public class Shed : Residential {
         roof.name = "roof";
         roof.transform.Rotate(yDir,90.0f, Space.World);
         roof.transform.SetParent(shedGameobject.transform);
+
+        Instantiate(light, roof.transform.position,roof.transform.rotation);
 
         Color c1 = new Color(Random.value, Random.value, Random.value);
         Color c2 = new Color(Random.value, Random.value, Random.value);
