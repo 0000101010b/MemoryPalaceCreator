@@ -213,6 +213,8 @@ public class WallMesh : MonoBehaviour
 
         //set mesh Filter
         mf.mesh = m;
+
+        
     }
 
     public void SetWallTexture(Color c)

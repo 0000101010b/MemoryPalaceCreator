@@ -142,6 +142,7 @@ public class BSPGrid : Grid {
             Vector3 mid = (lines[i] + lines[i+1]) / 2;
             r.transform.position = mid;
             r.floorMeshConstructor(to.magnitude, UnityEngine.Random.Range(1,4), 1, 1);
+            road.transform.position = road.transform.position+new Vector3(0,0.01f);
         }
     }
     public void CreateBuildings()

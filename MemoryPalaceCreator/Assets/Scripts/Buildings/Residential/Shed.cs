@@ -122,12 +122,14 @@ public class Shed : Residential {
             WallMesh wallmesh=g.GetComponent<WallMesh>();
             wallmesh.SetWallTexture(c1);
             g.name = "Inside Wall";
+            g.AddComponent<MeshCollider>();
             g.transform.SetParent(shedGameobject.transform);
         }
         foreach (GameObject g in outsideWalls)
         {
             WallMesh wallmesh = g.GetComponent<WallMesh>();
             wallmesh.SetWallTexture(c2);
+            g.AddComponent<MeshCollider>();
             g.name = "Outside Wall";
             g.transform.SetParent(shedGameobject.transform);
         }

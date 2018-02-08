@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>2017.1.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -86,6 +88,7 @@
   <ItemGroup>
     <Compile Include="Assets\Border.cs" />
     <Compile Include="Assets\CreateTriangle.cs" />
+    <Compile Include="Assets\Scripts\BuildingTools\Doorway.cs" />
     <Compile Include="Assets\Libraries\MyVector3Lib.cs" />
     <Compile Include="Assets\MapCamera.cs" />
     <Compile Include="Assets\Other\BackgroundSpace.cs" />
@@ -110,7 +113,6 @@
     <Compile Include="Assets\Scripts\Buildings\Residential.cs" />
     <Compile Include="Assets\Scripts\Buildings\Residential\Shed.cs" />
     <Compile Include="Assets\Scripts\Buildings\Residential\ThatchedHouse.cs" />
-    <Compile Include="Assets\Scripts\BuildingTools\Doorway.cs" />
     <Compile Include="Assets\Scripts\BuildingTools\WallMesh.cs" />
     <Compile Include="Assets\Scripts\Grids\BSPGrid.cs" />
     <Compile Include="Assets\Scripts\Grids\Grid.cs" />
