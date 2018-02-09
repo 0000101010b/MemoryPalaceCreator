@@ -86,6 +86,7 @@
   <ItemGroup>
     <Compile Include="Assets\Border.cs" />
     <Compile Include="Assets\CreateTriangle.cs" />
+    <Compile Include="Assets\InterfaceSelect.cs" />
     <Compile Include="Assets\Libraries\MyVector3Lib.cs" />
     <Compile Include="Assets\MapCamera.cs" />
     <Compile Include="Assets\Other\BackgroundSpace.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Assets\Scripts\Grids\Grid.cs" />
     <Compile Include="Assets\Scripts\Grids\GridAlgorithms\BSP.cs" />
     <Compile Include="Assets\Scripts\Grids\PolyGrid.cs" />
+    <Compile Include="Assets\Scripts\imageScraper2.cs" />
     <Compile Include="Assets\Scripts\Map.cs" />
   </ItemGroup>
   <ItemGroup>
