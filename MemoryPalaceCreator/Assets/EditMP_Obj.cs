@@ -73,7 +73,7 @@ public class EditMP_Obj : MonoBehaviour {
                     Cursor.lockState = CursorLockMode.Locked;
                     Cursor.visible = false;
 
-                    if (Input.GetMouseButtonDown(0))
+                    if (Input.GetMouseButton(0))
                     {
                         editMode = eEditMode.EditText;
                         fpsScript.enabled = false;
@@ -96,7 +96,7 @@ public class EditMP_Obj : MonoBehaviour {
                     Cursor.lockState = CursorLockMode.None;
                     Cursor.visible = true;
                     
-                    if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Return))
+                    if (Input.GetMouseButton(1) || Input.GetKeyDown(KeyCode.Return))
                     {
                         editMode = eEditMode.NotLooking;
                         Cursor.lockState = CursorLockMode.Locked;
