@@ -20,7 +20,7 @@ public class InterfaceSelect : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.I)&&!objectSelect.activeSelf)
             ObjectSelect();
 
 	}
@@ -28,7 +28,6 @@ public class InterfaceSelect : MonoBehaviour {
     public void ObjectSelect()
     {
         fpsScript.enabled = !fpsScript.enabled;
-        //Cursor.visible = !Cursor.visible;
         objectSelect.SetActive(!objectSelect.activeSelf);
         Cursor.visible = true;
     }

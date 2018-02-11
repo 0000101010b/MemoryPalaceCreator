@@ -16,7 +16,9 @@ public class imageScraper2 : MonoBehaviour
 
     public GameObject prefab;
     public string url;
-   // public InputField IF;
+
+
+    public InputField searchInputField;
     public string matchString;
     List<string> scr;
 
@@ -24,37 +26,38 @@ public class imageScraper2 : MonoBehaviour
     public int startPosition;
     public bool filterSimilarResults;
     // public  SafeSearchFiltering;
+    
     // Use this for initialization
-    //public void Start()
-    //{
+    public void Start()
+    {
+        searchInputField.ActivateInputField();
+    }
 
     public Text searchText;
     public void Search()
     {         
         MakeRequest(searchText.text);
+        searchInputField.ActivateInputField();
     }
-   // }
+
 
 
     public void MakeRequest(string text)
     {
         query=text;
-        //IF.text = "";
-        string requestUrl =
-        string.Format("http://images.google.com/images?" +
-   "q={0}&start={1}&filter={2}&safe={3}",
-   query, startPosition.ToString(),
-   (filterSimilarResults) ? 1.ToString() : 0.ToString(),
-   SafeSearchFiltering.Moderate);
 
-        HttpWebRequest request =
-     (HttpWebRequest)WebRequest.Create(requestUrl);
+        string requestUrl = string.Format("http://images.google.com/images?" + "q={0}&start={1}&filter={2}&safe={3}",
+                    query, startPosition.ToString(),
+                    (filterSimilarResults) ? 1.ToString() : 0.ToString(),
+                    SafeSearchFiltering.Active);
+
+        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(requestUrl);
+
         string resultPage = string.Empty;
-        using (HttpWebResponse httpWebResponse =
-                   (HttpWebResponse)request.GetResponse())
+
+        using (HttpWebResponse httpWebResponse = (HttpWebResponse)request.GetResponse())
         {
-            using (Stream responseStream =
-                      httpWebResponse.GetResponseStream())
+            using (Stream responseStream = httpWebResponse.GetResponseStream())
             {
                 using (StreamReader reader =
                          new StreamReader(responseStream))
@@ -82,23 +85,22 @@ public class imageScraper2 : MonoBehaviour
             matchString = temp.Value;
             scr.Add(matchString);
             Debug.Log(matchString);
-            resultPage = resultPage.Substring(temp.Index + temp.Length);
-
-            
+            resultPage = resultPage.Substring(temp.Index + temp.Length);    
         }
 
 
         //matchString = Regex.Match(resultPage, "<img.+?src=[\"'](.+?)[\"'].+?>", RegexOptions.IgnoreCase).Groups[1].Value;
-
-
         //foreach (Match ItemMatch in imagesRegex.Matches(resultPage))
         //{
         //  Debug.Log(ItemMatch);
         //}
+
         Debug.Log(matchString);
 
 
+        StopCoroutine("test");
         StartCoroutine("test");
+        
         // Debug.Log(imagesRegex[0]);
         // Debug.Log(resultPage);
 
@@ -162,6 +164,6 @@ public class imageScraper2 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.Return)) Search();
     }
 }
