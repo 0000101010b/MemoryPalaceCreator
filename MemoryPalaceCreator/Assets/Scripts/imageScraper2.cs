@@ -10,37 +10,54 @@ using System;
 public class imageScraper2 : MonoBehaviour
 {
     public GameObject player;
-    public GameObject cubePrefab;
-    public List<GameObject> imageObjs;
+    public GameObject outputObject;
+    private  List<GameObject> imageObjs;
+    public GameObject UI_imageObject;
 
+    private string url;
 
-    public GameObject prefab;
-    public string url;
-
-
+    [Header("Input Objects")]
     public InputField searchInputField;
-    public string matchString;
-    List<string> scr;
+    public Text searchText;
 
+
+    [Header("Query Options")]
     public string query;
     public int startPosition;
     public bool filterSimilarResults;
-    // public  SafeSearchFiltering;
-    
-    // Use this for initialization
+    public string matchString;
+    List<string> scr;
+
+    public enum SafeSearchFiltering
+    {
+        /// <summary>
+        /// Filter both explicit text and explicit images (a.k.a. Strict Filtering).
+        /// </summary>
+        Active,
+        /// <summary>
+        /// Filter explicit images only - default behavior.
+        /// </summary>
+        Moderate,
+        /// <summary>
+        /// Do not filter the search results.
+        /// </summary>
+        Off
+    }
+
+
+    //Use this for initialization
     public void Start()
     {
+        imageObjs = new List<GameObject>();
         searchInputField.ActivateInputField();
     }
 
-    public Text searchText;
+    #region Search
     public void Search()
     {         
         MakeRequest(searchText.text);
         searchInputField.ActivateInputField();
     }
-
-
 
     public void MakeRequest(string text)
     {
@@ -98,32 +115,17 @@ public class imageScraper2 : MonoBehaviour
         Debug.Log(matchString);
 
 
-        StopCoroutine("test");
-        StartCoroutine("test");
+        StopCoroutine(GetImages());
+        StartCoroutine(GetImages());
         
         // Debug.Log(imagesRegex[0]);
         // Debug.Log(resultPage);
 
     }
 
-    public enum SafeSearchFiltering
-    {
-        /// <summary>
-        /// Filter both explicit text and explicit images (a.k.a. Strict Filtering).
-        /// </summary>
-        Active,
-        /// <summary>
-        /// Filter explicit images only - default behavior.
-        /// </summary>
-        Moderate,
-        /// <summary>
-        /// Do not filter the search results.
-        /// </summary>
-        Off
-    }
 
     private List<Texture2D> images;
-    IEnumerator test()
+    IEnumerator GetImages()
     {
         foreach (GameObject g in imageObjs)
             Destroy(g);
@@ -134,7 +136,7 @@ public class imageScraper2 : MonoBehaviour
         {
             WWW www = new WWW(scr[i]);
             yield return www;
-            GameObject g = Instantiate(prefab, transform.position + new Vector3(2 * i, 0, 0), Quaternion.identity) as GameObject;
+            GameObject g = Instantiate(UI_imageObject, transform.position + new Vector3(2 * i, 0, 0), Quaternion.identity) as GameObject;
             g.transform.SetParent(transform);
             Texture2D t = new Texture2D(www.texture.width, www.texture.height);
             www.LoadImageIntoTexture(t);
@@ -147,23 +149,27 @@ public class imageScraper2 : MonoBehaviour
             imageObjs.Add(g);
         }
     }
-
+    #endregion Search
 
     public void ImageSelect(int i)
     {
         Debug.Log("Image: "+i);
        
-        GameObject g=Instantiate(cubePrefab,player.transform.position +(player.transform.forward*2), player.transform.rotation *Quaternion.AngleAxis(180, Vector3.up)) as GameObject;
+        GameObject g=Instantiate(outputObject,player.transform.position +(player.transform.forward*2), player.transform.rotation *Quaternion.AngleAxis(180, Vector3.up)) as GameObject;
         g.GetComponent<Renderer>().material.mainTexture = images[i];
 
 
-        player.GetComponentInParent<InterfaceSelect>().ObjectSelect();
+        player.GetComponentInParent<InterfaceSelect>().ExitObjectSelect();
     }
     
 
     // Update is called once per frame
     void Update()
     {
+        //keep input field active
+        searchInputField.ActivateInputField();
+
+        //Return for search
         if (Input.GetKeyDown(KeyCode.Return)) Search();
     }
 }
