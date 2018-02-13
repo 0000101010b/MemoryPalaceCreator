@@ -9,8 +9,11 @@ using System;
 
 public class imageScraper2 : MonoBehaviour
 {
+    
     public GameObject player;
     public GameObject outputObject;
+    public GameObject outputMapObject;    
+
     private  List<GameObject> imageObjs;
     public GameObject UI_imageObject;
 
@@ -150,7 +153,7 @@ public class imageScraper2 : MonoBehaviour
         }
     }
     #endregion Search
-
+    int number = 0;
     public void ImageSelect(int i)
     {
         Debug.Log("Image: "+i);
@@ -158,7 +161,10 @@ public class imageScraper2 : MonoBehaviour
         GameObject g=Instantiate(outputObject,player.transform.position +(player.transform.forward*2), player.transform.rotation *Quaternion.AngleAxis(180, Vector3.up)) as GameObject;
         g.GetComponent<Renderer>().material.mainTexture = images[i];
 
-
+        g = Instantiate(outputMapObject, player.transform.position + (player.transform.forward * 2) + 58.5f*transform.up, Quaternion.identity * Quaternion.AngleAxis(90, Vector3.right)) as GameObject;
+        number++;
+        g.GetComponentInChildren<TextMesh>().text = number.ToString();
+      
         player.GetComponentInParent<InterfaceSelect>().ExitObjectSelect();
     }
     

@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Border.cs" />
+    <Compile Include="Assets\Bungalo.cs" />
     <Compile Include="Assets\CreateTriangle.cs" />
     <Compile Include="Assets\EditMP_Obj.cs" />
     <Compile Include="Assets\EditMPobj.cs" />
