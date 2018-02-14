@@ -74,8 +74,9 @@ public class EditMP_Obj : MonoBehaviour {
                         {
                             editWall = true;
                             currentWall=hit.collider.gameObject;
-                            //hit.collider.gameObject.GetComponent<Renderer>().material.mainTexture = Texture2D.blackTexture;
+             
                             textureSelect.SetActive(true);
+
                             Cursor.lockState = CursorLockMode.None;
                             Cursor.visible = true;
                             fpsScript.enabled = false;

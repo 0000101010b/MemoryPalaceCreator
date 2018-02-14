@@ -25,23 +25,36 @@ public class InterfaceSelect : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.I)&&!objectSelect.activeSelf && editMPobj.editMode == EditMP_Obj.eEditMode.NotLooking)
             EnterObjectSelect();
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+            ExitObjectSelect();
 	}
 
     public void EnterObjectSelect()
     {
-        editMPobj.enabled = false;
-        fpsScript.enabled = !fpsScript.enabled;
-        objectSelect.SetActive(!objectSelect.activeSelf);
+
+        Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        fpsScript.enabled = false;
+        editMPobj.editMode = EditMP_Obj.eEditMode.OtherInterface;
+        objectSelect.SetActive(!objectSelect.activeSelf);
     }
+
     public void ExitObjectSelect()
     {
         editMPobj.enabled = true;
         fpsScript.enabled = !fpsScript.enabled;
+
         objectSelect.SetActive(!objectSelect.activeSelf);
-        Cursor.visible = false;
+
+
         editMPobj.editMode = EditMP_Obj.eEditMode.NotLooking;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        editMPobj.editWall=false;
     }
+
 
 
 
