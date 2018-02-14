@@ -20,10 +20,10 @@ MonoBehaviour:
     y: 30
     width: 1920
     height: 947
-  m_MinSize: {x: 917, y: 581}
-  m_MaxSize: {x: 22012, y: 14042}
+  m_MinSize: {x: 915, y: 602}
+  m_MaxSize: {x: 22010, y: 14021}
   vertical: 0
-  controlID: 27221
+  controlID: 999
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -120,10 +120,10 @@ MonoBehaviour:
     y: 0
     width: 1364
     height: 947
-  m_MinSize: {x: 640, y: 581}
-  m_MaxSize: {x: 18010, y: 14042}
+  m_MinSize: {x: 638, y: 602}
+  m_MaxSize: {x: 18008, y: 14021}
   vertical: 1
-  controlID: 27222
+  controlID: 959
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -145,10 +145,10 @@ MonoBehaviour:
     y: 0
     width: 1364
     height: 453
-  m_MinSize: {x: 404, y: 200}
-  m_MaxSize: {x: 12004, y: 4021}
+  m_MinSize: {x: 406, y: 221}
+  m_MaxSize: {x: 12006, y: 4021}
   vertical: 0
-  controlID: 27052
+  controlID: 960
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -167,8 +167,8 @@ MonoBehaviour:
     y: 0
     width: 487
     height: 453
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 6}
   m_Panes:
   - {fileID: 6}
@@ -202,9 +202,9 @@ MonoBehaviour:
     height: 432
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: ea310000
-    m_LastClickedID: 12778
-    m_ExpandedIDs: 8aacf7ff58f0f8ff7cc1fdff76e1feff2afffeff1eccffff1afcffff000000002e310000463100007e31000000320000
+    m_SelectedIDs: 582b0000
+    m_LastClickedID: 11096
+    m_ExpandedIDs: da25ffffc4b9ffff1afcffff00000000242b0000a02b0000de2b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -245,8 +245,8 @@ MonoBehaviour:
     y: 0
     width: 603
     height: 453
-  m_MinSize: {x: 104, y: 121}
-  m_MaxSize: {x: 4004, y: 4021}
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 2}
   m_Panes:
   - {fileID: 2}
@@ -372,10 +372,10 @@ MonoBehaviour:
     y: 453
     width: 1364
     height: 494
-  m_MinSize: {x: 640, y: 381}
-  m_MaxSize: {x: 18010, y: 10021}
+  m_MinSize: {x: 638, y: 381}
+  m_MaxSize: {x: 18008, y: 10000}
   vertical: 0
-  controlID: 27223
+  controlID: 916
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -394,8 +394,8 @@ MonoBehaviour:
     y: 0
     width: 406
     height: 494
-  m_MinSize: {x: 232, y: 271}
-  m_MaxSize: {x: 10002, y: 10021}
+  m_MinSize: {x: 230, y: 250}
+  m_MaxSize: {x: 10000, y: 10000}
   m_ActualView: {fileID: 13}
   m_Panes:
   - {fileID: 12}
@@ -467,19 +467,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Prefabs
+    - Assets
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Prefabs
+  - Assets
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\BenTh\Documents\GitHub\MemoryPalaceCreator\MemoryPalaceCreator
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 88920000
-    m_LastClickedID: 37512
-    m_ExpandedIDs: 00000000e4270000fc270000282900002e2900008e290000ac29000000ca9a3bffffff7f
+    m_SelectedIDs: e4270000
+    m_LastClickedID: 10212
+    m_ExpandedIDs: 00000000e4270000fc2700002c2900003229000098290000b629000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -507,7 +507,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000e4270000fc270000282900002e2900008e290000ac29000000ca9a3bffffff7f
+    m_ExpandedIDs: 00000000e4270000fc2700002c2900003229000098290000b629000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -532,9 +532,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: ea310000
-    m_LastClickedInstanceID: 12778
-    m_HadKeyboardFocusLastEvent: 0
+    m_SelectedInstanceIDs: 582b0000
+    m_LastClickedInstanceID: 11096
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: 4a090000a2050000660df7ff00000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -559,7 +559,7 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 0}
+    m_ScrollPosition: {x: 0, y: 304}
     m_GridSize: 64
   m_DirectoriesAreaWidth: 98
 --- !u!114 &14

@@ -40,6 +40,7 @@ public class InterfaceSelect : MonoBehaviour {
         fpsScript.enabled = !fpsScript.enabled;
         objectSelect.SetActive(!objectSelect.activeSelf);
         Cursor.visible = false;
+        editMPobj.editMode = EditMP_Obj.eEditMode.NotLooking;
     }
 
 

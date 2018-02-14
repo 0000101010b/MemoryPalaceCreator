@@ -15,6 +15,10 @@ public class EditMP_Obj : MonoBehaviour {
 
     public MPobj mpobj;
 
+    public bool editWall;
+    public GameObject currentWall;
+    public GameObject textureSelect;
+
     public enum eEditMode
     {
         Looking,
@@ -62,6 +66,25 @@ public class EditMP_Obj : MonoBehaviour {
                        
                         editMode = eEditMode.Looking;
                     }
+
+                    if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.name == "Inside Wall")
+                    {
+
+                        if (Input.GetMouseButton(1))
+                        {
+                            editWall = true;
+                            currentWall=hit.collider.gameObject;
+                            //hit.collider.gameObject.GetComponent<Renderer>().material.mainTexture = Texture2D.blackTexture;
+                            textureSelect.SetActive(true);
+                            Cursor.lockState = CursorLockMode.None;
+                            Cursor.visible = true;
+                            fpsScript.enabled = false;
+                            editMode = eEditMode.OtherInterface;
+
+                        }
+                    }
+
+
                     break;
              }
             case eEditMode.Looking:

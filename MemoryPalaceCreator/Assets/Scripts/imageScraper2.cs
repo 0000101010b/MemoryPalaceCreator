@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class imageScraper2 : MonoBehaviour
 {
@@ -156,16 +157,39 @@ public class imageScraper2 : MonoBehaviour
     int number = 0;
     public void ImageSelect(int i)
     {
-        Debug.Log("Image: "+i);
-       
-        GameObject g=Instantiate(outputObject,player.transform.position +(player.transform.forward*2), player.transform.rotation *Quaternion.AngleAxis(180, Vector3.up)) as GameObject;
-        g.GetComponent<Renderer>().material.mainTexture = images[i];
+        
+        Debug.Log("Image: " + i);
 
-        g = Instantiate(outputMapObject, player.transform.position + (player.transform.forward * 2) + 58.5f*transform.up, Quaternion.identity * Quaternion.AngleAxis(90, Vector3.right)) as GameObject;
-        number++;
-        g.GetComponentInChildren<TextMesh>().text = number.ToString();
-      
-        player.GetComponentInParent<InterfaceSelect>().ExitObjectSelect();
+        if (!player.GetComponentInChildren<EditMP_Obj>().editWall)
+        {
+            GameObject g = Instantiate(outputObject, player.transform.position + (player.transform.forward * 2), player.transform.rotation * Quaternion.AngleAxis(180, Vector3.up)) as GameObject;
+            g.GetComponent<Renderer>().material.mainTexture = images[i];
+
+            g = Instantiate(outputMapObject, player.transform.position + (player.transform.forward * 2) + 58.5f * transform.up, Quaternion.identity * Quaternion.AngleAxis(90, Vector3.right)) as GameObject;
+            number++;
+
+            g.GetComponentInChildren<TextMesh>().text = number.ToString();
+            player.GetComponentInParent<InterfaceSelect>().ExitObjectSelect();
+        }
+        else
+        {
+            player.GetComponentInChildren<EditMP_Obj>().currentWall.GetComponent<Renderer>().material.color = Color.white;
+            player.GetComponentInChildren<EditMP_Obj>().currentWall.GetComponent<Renderer>().material.mainTexture = images[i];
+            player.GetComponentInChildren<EditMP_Obj>().editWall = false;
+
+            player.GetComponentInParent<InterfaceSelect>().ExitObjectSelect();
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
+
+
+          
+            //fpsScript.enabled = true;
+            //editMode = eEditMode.OtherInterface;
+            
+        }
+
+  
     }
     
 
