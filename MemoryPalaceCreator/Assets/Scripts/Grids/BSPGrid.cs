@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 public class BSPGrid : Grid {
-
-
     [Header("Grid Variables")]
 
     public int minLeafSize;

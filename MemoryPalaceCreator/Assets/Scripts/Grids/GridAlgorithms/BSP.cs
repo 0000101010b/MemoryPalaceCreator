@@ -246,6 +246,23 @@ public class Rectangle
         width = _width;
         height = _height;
     }
+
+    public Vector2 GetCenter()
+    {
+        return new Vector2((float)x + (float)width / 2.0f, (float)y + (float)height / 2.0f); ;
+    }
+
+    public bool PointInRect(Vector2 v)
+    {
+        if (x < v.x &&
+           y < v.y &&
+           x + width > v.x &&
+           y + height > v.y)
+            return true;
+        else
+            return false;
+
+    }
 }
 
 public class BSP : MonoBehaviour {

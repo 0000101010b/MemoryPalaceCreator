@@ -5,16 +5,15 @@ using UnityEngine;
 
 public class Bungalo : MonoBehaviour {
 
+    public List<GameObject> bungaloObjs;
 
-    public GameObject doorPrefab;
+    public List<Line> debugLines1;
+    public Dictionary<Vector2, Vector3> doorLocations;
 
-    public Dictionary<Vector2, Vector3> points;
-
-    public List<Line> l2;
     public Vector3 pos;
     public bool[,] isbuildArea;//is build area or not
     public int[,] gridValues; //area category
-    //public int gridWidthBreath;
+
     public int gridWidth;
     public int gridBreath;
 
@@ -29,41 +28,66 @@ public class Bungalo : MonoBehaviour {
     public List<Vector3> lines;
     List<Vector2> posBuildings;
 
+    List<Vector3> roomCenters;
 
     public List<Rectangle> halls;
-    public List<Rectangle> rooms;
+    public List<Rectangle> bspRects;
 
-
+    //Rooms
+    public List<Room> rooms;
+    
     private void Start()
     {
         MakeBungalo();
 
-        rooms = new List<Rectangle>();
-        halls = new List<Rectangle>();
-
-        GetHallsAndLines(root);
-
-        l2 = new List<Line>();
-        FindDoors();
-
-        SetDoorPositions();
-
     }
 
-    public List<GameObject> doors;
     // Use this for initialization
     void MakeBungalo () {
-        points = new Dictionary<Vector2,Vector3>();
+
+        doorLocations = new Dictionary<Vector2,Vector3>();
         lines = new List<Vector3>();
         posBuildings = new List<Vector2>();
+
         CreateGrid();
-   
+
+        debugLines1 = new List<Line>();
+        bspRects = new List<Rectangle>();
+        halls = new List<Rectangle>();
+
+        foreach (GameObject g in bungaloObjs)
+            Destroy(g);
+        bungaloObjs = new List<GameObject>();
+
+        GetHallsAndLines(root);
+        FindDoors();
+        SetDoorPositions();
+        FindRoomCenters();
+
+
+    }
+    void FindRoomCenters()
+    {
+        rooms = new List<Room>();
+
+        for (int i = 0; i < bspRects.Count; i++)
+        {
+            int count = 0;
+
+            for (int j = i; j < bspRects.Count; j++)
+            {
+                if (bspRects[i].PointInRect(bspRects[j].GetCenter()))
+                    count++;
+            }
+
+            if (count == 1)
+                rooms.Add(new Room(bspRects[i]));
+        }
     }
 
     void SetDoorPositions()
     {
-
-        foreach (KeyValuePair<Vector2,Vector3> p in points)
+        foreach (KeyValuePair<Vector2,Vector3> p in doorLocations)
         {
             GameObject door = new GameObject("Door");
             door.transform.position = new Vector3(p.Key.x ,0, p.Key.y) +new Vector3(0,1f);
@@ -74,7 +98,7 @@ public class Bungalo : MonoBehaviour {
             if (p.Value == Vector3.right)
                 door.transform.rotation *= Quaternion.AngleAxis(90, transform.up);
 
-
+            bungaloObjs.Add(door);
         }
     }
 
@@ -92,12 +116,12 @@ public class Bungalo : MonoBehaviour {
                 l = new Line(new Vector2(h.x, h.y), new Vector2(h.x + h.width, h.y));
             else
                 l = new Line(new Vector2(h.x, h.y), new Vector2(h.x , h.y + h.height));
-            l2.Add(l);
+            debugLines1.Add(l);
 
 
             Vector2 dir = l.e - l.s;
             //if intersect with room wall
-            foreach (Rectangle r in rooms)
+            foreach (Rectangle r in bspRects)
             {
                 Line wall;
                 if (isWidth)
@@ -114,8 +138,8 @@ public class Bungalo : MonoBehaviour {
                         if (wall.s.x > l.s.x && wall.e.x < l.e.x && wall.e.y > l.s.y && wall.s.y < l.s.y)
                         {
                             Vector2 key = new Vector2(wall.s.x, l.s.y) + new Vector2(0, 0.5f);
-                            if (!points.ContainsKey(key))
-                                points.Add( key,Vector3.right);
+                            if (!doorLocations.ContainsKey(key))
+                                doorLocations.Add( key,Vector3.right);
                         }
 
                     }
@@ -123,8 +147,8 @@ public class Bungalo : MonoBehaviour {
                     {
                         Vector2 key = new Vector2(l.s.x, wall.s.y) + new Vector2(0.5f, 0);
 
-                        if(!points.ContainsKey(key))
-                            points.Add( key, Vector3.forward);
+                        if(!doorLocations.ContainsKey(key))
+                            doorLocations.Add( key, Vector3.forward);
                     }
                 }
             }
@@ -135,7 +159,7 @@ public class Bungalo : MonoBehaviour {
     {
         if (l!=null)
         {
-            rooms.Add(new Rectangle(l.x,l.y,l.width,l.height));
+            bspRects.Add(new Rectangle(l.x,l.y,l.width,l.height));
 
             if (l.halls != null)
             {
@@ -169,9 +193,9 @@ public class Bungalo : MonoBehaviour {
     void Draw2()
     {
         Gizmos.color = Color.black;
-        if (rooms != null)
+        if (bspRects != null)
         {
-            foreach (Rectangle r in rooms)
+            foreach (Rectangle r in bspRects)
             {
                 Gizmos.DrawLine(new Vector3(r.x, 0, r.y), new Vector3(r.x + r.width, 0, r.y));
                 Gizmos.DrawLine(new Vector3(r.x, 0, r.y), new Vector3(r.x, 0, r.y + r.height));
@@ -195,64 +219,24 @@ public class Bungalo : MonoBehaviour {
         }
     }
 
-
-
-    
-    void CreateDoor(Leaf l)
-    {
-        if (l != null)
-        {
-            Gizmos.color = Color.black;
-            if (l != null)
-            {
-                Gizmos.DrawLine(new Vector3(l.x, 0, l.y), new Vector3(l.x + l.width, 0, l.y));
-                Gizmos.DrawLine(new Vector3(l.x, 0, l.y), new Vector3(l.x, 0, l.y + l.height));
-
-                Gizmos.DrawLine(new Vector3(l.x + l.width, 0, l.y + l.height), new Vector3(l.x + l.width, 0, l.y));
-                Gizmos.DrawLine(new Vector3(l.x + l.width, 0, l.y + l.height), new Vector3(l.x, 0, l.y + l.height));
-            }
-            Gizmos.color = Color.white;
-            if (l.halls != null)
-            {
-                foreach (Rectangle h in l.halls)
-                {
-                    Gizmos.DrawLine(new Vector3(h.x, 0, h.y), new Vector3(h.x + h.width, 0, h.y));
-                    Gizmos.DrawLine(new Vector3(h.x, 0, h.y), new Vector3(h.x, 0, h.y + h.height));
-
-                    Gizmos.DrawLine(new Vector3(h.x + h.width, 0, h.y + h.height), new Vector3(h.x + h.width, 0, h.y));
-                    Gizmos.DrawLine(new Vector3(h.x + h.width, 0, h.y + h.height), new Vector3(h.x, 0, h.y + h.height));
-                }
-            }
-        }
-
-
-        
-        if (l.leftChild != null || l.rightChild != null)
-        {
-            CreateDoor(l.leftChild);
-            CreateDoor(l.rightChild);
-        }
-
-    }
-
-
-
-
     void OnDrawGizmos()
     {
         Draw2();
 
         Gizmos.color = Color.red;
 
-        foreach (Line l in l2)
+        foreach (Line l in debugLines1)
             Gizmos.DrawLine(new Vector3(l.s.x,0,l.s.y), new Vector3(l.e.x, 0, l.e.y));
 
 
-        foreach (KeyValuePair<Vector2,Vector3> v in points)
+        foreach (KeyValuePair<Vector2,Vector3> v in doorLocations)
             Gizmos.DrawWireSphere(new Vector3(v.Key.x,0,v.Key.y), 0.1f);
 
 
-        //CreateDoor(root);
+        Gizmos.color = Color.green;
+        foreach(Room r in rooms)
+            Gizmos.DrawWireSphere(new Vector3(r.center.x, 0, r.center.y), 0.1f);
+
         //Draw(root);
     }
 
@@ -334,8 +318,22 @@ public class Bungalo : MonoBehaviour {
 
     }
     // Update is called once per frame
+
     void Update () {
-        if (Input.GetKey(KeyCode.Space)) MakeBungalo();
-		
+        if (Input.GetKey(KeyCode.Space)) MakeBungalo();	
 	}
+
+}
+
+
+public class Room
+{
+    public Vector2 center;
+    public Rectangle rect;
+
+    public Room(Rectangle r)
+    {
+        this.center = r.GetCenter();
+        this.rect = r;
+    }
 }
