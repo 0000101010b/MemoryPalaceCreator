@@ -21,7 +21,7 @@ a30beadf4d109f44144b9a9f42e61cbf Assembly-CSharp-firstpass.dll:UnityStandardAsse
 daabd8d8800a87cff11f866c4d06a232 Assembly-CSharp-firstpass.dll:UnityStandardAssets.ImageEffects.ContrastStretch
 31ac2865258ddbc8f82525645ca875c2 Assembly-CSharp-firstpass.dll:UnityStandardAssets.ImageEffects.VignetteAndChromaticAberration
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp-firstpass.dll:.EventSystemChecker
-feff4b0f63e90c84623a62370a4c2a3e Assembly-CSharp.dll:.EditMP_Obj
+039ef2eb148a0ae766d780aeb762644f Assembly-CSharp.dll:.EditMP_Obj
 1ad999c1c59cc66b1257b3f9407287bc Assembly-CSharp-firstpass.dll:UnityStandardAssets.ImageEffects.ColorCorrectionCurves
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.MPobj
 a35dc9cca2faebc5f5f1aeb9e8e47bbe UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
@@ -202,7 +202,7 @@ bc68edb0af574bf79f9550ead8ebae5c UnityEngine.HoloLens.dll:UnityEngine.Audio.Audi
 c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.SpatialMappingCollider
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.SpatialMappingRenderer
 7ef97f5755d70463e0974f7c7dec9409 Assembly-CSharp.dll:.PlayerMovement
-15aa9f914e408bd9ee3d020cdde4a4da Assembly-CSharp.dll:.imageScraper2
+f93067ad155ccabe0b4669a21fa6cf1a Assembly-CSharp.dll:.imageScraper2
 67af8340ec9c081c037c8aa5c753ce0a Assembly-CSharp-firstpass.dll:UnityStandardAssets.ImageEffects.ColorCorrectionRamp
 4cf1ceae9881e3ae26ab45745f3aa417 Assembly-CSharp-firstpass.dll:UnityStandardAssets.ImageEffects.Grayscale
 c08b196716247885d3b27f7f282b2568 Assembly-CSharp-firstpass.dll:UnityStandardAssets.ImageEffects.SepiaTone
@@ -229,4 +229,5 @@ e2a8fd4524fc2a3a236b7e7720b544a6 Assembly-CSharp-firstpass.dll:UnityStandardAsse
 b3432dfe180f02232d7612fb366593d3 Assembly-CSharp-firstpass.dll:UnityStandardAssets.ImageEffects.ColorCorrectionLookup
 ed471d16c24f0869576486234b7b0c76 Assembly-CSharp.dll:.BackgroundSpace
 3ae0dad0b55a80319e1d57c2dce28da7 Assembly-CSharp-firstpass.dll:UnityStandardAssets.ImageEffects.Tonemapping
+fb5e0da2ca3e89ec50b326a4ababb02f Assembly-CSharp.dll:.Bungalo
 0f3d4bb7128a287827d041c696039525 Assembly-CSharp-firstpass.dll:UnityStandardAssets.Utility.AutoMobileShaderSwitch
