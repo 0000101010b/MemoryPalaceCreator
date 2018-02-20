@@ -55,7 +55,7 @@ public class Shed : Residential {
         insideWalls.Add(MakePlane(true,northWallpos + (yDir * 1.0f), -yDir, buildSpace.x-2f, height, 1.0f, 1.0f,rect[0],rectH[0],rectW[0]));
         if (rectH[0] == 2)
         { 
-            Doorway dw=doorway.AddComponent<Doorway>();
+            Doorway_Gen dw=doorway.AddComponent<Doorway_Gen>();
             dw.Build();
             doorway.transform.rotation *= Quaternion.AngleAxis(90, Vector3.up);
             doorway.transform.position = northWallpos + new Vector3(0.5f,-.5f,-(rect[0].x - (buildSpace.x / 2)+.5f) );
@@ -66,7 +66,7 @@ public class Shed : Residential {
         insideWalls.Add(MakePlane(true,southWallpos - (yDir * 1.0f), yDir, buildSpace.x-2f, height, 1.0f, 1.0f, rect[1], rectH[1], rectW[1]));
         if (rectH[1] == 2)
         {
-            Doorway dw = doorway.AddComponent<Doorway>();
+            Doorway_Gen dw = doorway.AddComponent<Doorway_Gen>();
             dw.Build();
             doorway.transform.rotation *= Quaternion.AngleAxis(90, Vector3.up);
             doorway.transform.position = southWallpos+ new Vector3(-0.5f, -.5f, (rect[1].x - (buildSpace.x / 2) + .5f));
@@ -78,7 +78,7 @@ public class Shed : Residential {
         
         if (rectH[2] == 2)
         {
-            Doorway dw = doorway.AddComponent<Doorway>();
+            Doorway_Gen dw = doorway.AddComponent<Doorway_Gen>();
             dw.Build();
             doorway.transform.position = eastWallpos + new Vector3(rect[2].x - (buildSpace.y / 2)+.5f, -.5f,.5f);
         }
@@ -89,7 +89,7 @@ public class Shed : Residential {
 
         if (rectH[3] == 2)
         {
-            Doorway dw = doorway.AddComponent<Doorway>();
+            Doorway_Gen dw = doorway.AddComponent<Doorway_Gen>();
             dw.Build();
             doorway.transform.position = westWallpos + new Vector3(-rect[3].x + (buildSpace.y / 2) - .5f, -.5f, -.5f);
         }

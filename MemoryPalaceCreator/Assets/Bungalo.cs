@@ -5,33 +5,28 @@ using UnityEngine;
 
 public class Bungalo : MonoBehaviour {
 
-    public List<GameObject> bungaloObjs;
 
-    public List<Line> debugLines1;
+    //GameObjects
+    private List<GameObject> bungaloObjs;
+
+    //Debug Lines
+    public List<Line> DL1;
     public Dictionary<Vector2, Vector3> doorLocations;
 
-    public Vector3 pos;
-    public bool[,] isbuildArea;//is build area or not
-    public int[,] gridValues; //area category
-
+    [Header("Grid Variables")]
     public int gridWidth;
     public int gridBreath;
-
-    [Header("Grid Variables")]
     public int minLeafSize;
     public int maxLeafSize;
     public float magnitude;
 
-    public List<Leaf> _leafs;
-    public Leaf root;
 
-    public List<Vector3> lines;
-    List<Vector2> posBuildings;
+    //contruction objects
+    List<Leaf> _leafs;
+    Leaf root;
+    List<Rectangle> halls;
+    List<Rectangle> bspRects;
 
-    List<Vector3> roomCenters;
-
-    public List<Rectangle> halls;
-    public List<Rectangle> bspRects;
 
     //Rooms
     public List<Room> rooms;
@@ -39,24 +34,27 @@ public class Bungalo : MonoBehaviour {
     private void Start()
     {
         MakeBungalo();
-
     }
 
     // Use this for initialization
     void MakeBungalo () {
 
         doorLocations = new Dictionary<Vector2,Vector3>();
-        lines = new List<Vector3>();
-        posBuildings = new List<Vector2>();
+       
+
 
         CreateGrid();
 
-        debugLines1 = new List<Line>();
+        DL1 = new List<Line>();
         bspRects = new List<Rectangle>();
         halls = new List<Rectangle>();
 
-        foreach (GameObject g in bungaloObjs)
-            Destroy(g);
+        if (bungaloObjs != null)
+        {
+            foreach (GameObject g in bungaloObjs)
+                Destroy(g);
+        }
+
         bungaloObjs = new List<GameObject>();
 
         GetHallsAndLines(root);
@@ -65,7 +63,21 @@ public class Bungalo : MonoBehaviour {
         FindRoomCenters();
 
 
+
+
+
+        Create();
+
     }
+
+
+
+    void Create()
+    {
+        foreach (Room r in rooms)
+            r.Create();
+    }
+
     void FindRoomCenters()
     {
         rooms = new List<Room>();
@@ -80,8 +92,9 @@ public class Bungalo : MonoBehaviour {
                     count++;
             }
 
+          
             if (count == 1)
-                rooms.Add(new Room(bspRects[i]));
+                rooms.Add(new Room(bspRects[i],doorLocations.Keys.ToList()));
         }
     }
 
@@ -93,7 +106,7 @@ public class Bungalo : MonoBehaviour {
             door.transform.position = new Vector3(p.Key.x ,0, p.Key.y) +new Vector3(0,1f);
      
             
-            Doorway script=door.AddComponent<Doorway>();
+            Doorway_Gen script=door.AddComponent<Doorway_Gen>();
             script.Build();
             if (p.Value == Vector3.right)
                 door.transform.rotation *= Quaternion.AngleAxis(90, transform.up);
@@ -116,7 +129,7 @@ public class Bungalo : MonoBehaviour {
                 l = new Line(new Vector2(h.x, h.y), new Vector2(h.x + h.width, h.y));
             else
                 l = new Line(new Vector2(h.x, h.y), new Vector2(h.x , h.y + h.height));
-            debugLines1.Add(l);
+            DL1.Add(l);
 
 
             Vector2 dir = l.e - l.s;
@@ -225,7 +238,7 @@ public class Bungalo : MonoBehaviour {
 
         Gizmos.color = Color.red;
 
-        foreach (Line l in debugLines1)
+        foreach (Line l in DL1)
             Gizmos.DrawLine(new Vector3(l.s.x,0,l.s.y), new Vector3(l.e.x, 0, l.e.y));
 
 
@@ -235,7 +248,7 @@ public class Bungalo : MonoBehaviour {
 
         Gizmos.color = Color.green;
         foreach(Room r in rooms)
-            Gizmos.DrawWireSphere(new Vector3(r.center.x, 0, r.center.y), 0.1f);
+            Gizmos.DrawWireSphere(new Vector3(r.Center.x, 0, r.Center.y), 0.1f);
 
         //Draw(root);
     }
@@ -325,15 +338,168 @@ public class Bungalo : MonoBehaviour {
 
 }
 
+public enum eWall
+{
+    East,
+    West,
+    North,
+    South,
+    Floor,
+    Ceiling,
+    Roof
+}
+/*
+public class Doorway
+{
+    public Rectangle rect;
+}*/
+
+public class Wall
+{
+    public eWall directionFacing;
+    public Rectangle rect;
+    public List<Rectangle> doorways;
+
+
+    public Wall(eWall _dirFacing,Rectangle _rect,List<Rectangle>  _doorways)
+    {
+        this.directionFacing = _dirFacing;
+        this.rect = _rect;
+        this.doorways = _doorways;
+    }
+
+    public void Create()
+    {
+        switch(directionFacing)
+        {
+            case eWall.Floor:
+                Floor();
+                break;
+            case eWall.East:
+                East();
+                break;
+            default:
+                break;
+
+               
+        }
+    }
+    public void East()
+    {
+        GameObject wall = new GameObject("East Inside Wall");
+        WallMesh wallMesh = wall.AddComponent<WallMesh>();
+        wallMesh.invert = true;
+
+        if (doorways != null)
+        {
+            for (int i = 0; i < doorways.Count; i++)
+            {
+
+
+                wallMesh.rect = new Vector2(doorways[i].x,doorways[i].y);
+                wallMesh.rectH = doorways[i].height;
+                wallMesh.rectW = doorways[i].width;
+            }
+        }
+        wallMesh.WallMeshContructor(rect.height , 3, 1, 1);
+        wall.transform.rotation *= Quaternion.AngleAxis(90.0f, Vector3.up);
+
+
+
+        wall.transform.position = wall.transform.position + rect.East() + Vector3.up *1.5f;
+    }
+
+    public void Floor()
+    {
+        GameObject wall = new GameObject("Floor");
+        WallMesh wallMesh = wall.AddComponent<WallMesh>();
+        wallMesh.invert = false;
+        wallMesh.WallMeshContructor(rect.width-1, rect.height-1, 1, 1);
+        wall.transform.rotation *= Quaternion.AngleAxis(90, Vector3.right);
+        wall.transform.position = wall.transform.position + rect.GetCenter3d();
+    }
+}
 
 public class Room
 {
-    public Vector2 center;
-    public Rectangle rect;
+    public List<Wall> walls;
 
-    public Room(Rectangle r)
+    private Vector2 center;
+    private Rectangle rect;
+
+    public Vector2 Center
+    {
+        get
+        {
+            return center;
+        }
+        set
+        {
+            center = value;
+        }
+    }
+
+    public Rectangle Rect
+    {
+        get
+        {
+            return rect;
+        }
+        set
+        {
+            rect = value;
+        }
+    }
+
+
+    public Room(Rectangle r, List<Vector2> doorways)
     {
         this.center = r.GetCenter();
         this.rect = r;
+
+        walls = new List<Wall>();
+        //walls.Add(new Wall(eWall.Floor, r, r));
+
+        List<Rectangle> eastDoorways = new List<Rectangle>();
+        List<Rectangle> northDoorways = new List<Rectangle>();
+
+        foreach (Vector2 v in doorways)
+        {
+
+            switch (rect.PointOnWall(v))
+            {
+
+                case eWall.East:
+                    eastDoorways.Add(new Rectangle((int)(v.y + 0.5f) - rect.y, 0, 1, 2));
+                    break;
+                case eWall.North:
+                    northDoorways.Add(new Rectangle((int)(v.y + 0.5f) - rect.y, 0, 1, 2));
+                    break;
+                default:
+                    break;
+
+            {
+
+            }
+            /*if (rect.PointOnWall(v) == eWall.East)
+            {
+                eastDoorways.Add(new Rectangle((int)(v.y + 0.5f) - rect.y, 0, 1, 2));
+            }*/
+
+            }
+
+        }
+
+
+        walls.Add(new Wall(eWall.East, r, eastDoorways));
+
+      
+    }
+
+    public void Create()
+    {
+        foreach (Wall wall in walls)
+            wall.Create();
+
     }
 }
