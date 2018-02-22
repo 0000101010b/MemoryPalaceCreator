@@ -279,7 +279,7 @@ public class Rectangle
     }
     public Vector3 Ceiling()
     {
-        return new Vector3((float)x + (float)width / 2.0f, 3.0f, (float)y + (float)height / 2.0f);
+        return new Vector3((float)x + (float)width / 2.0f, 2.75f, (float)y + (float)height / 2.0f);
     }
 
     public eWall PointOnWall(Vector2 v)

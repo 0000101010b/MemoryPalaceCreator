@@ -111,7 +111,7 @@ public class BSPGrid : Grid {
                             b.gridWidth = rect.width;
                             b.gridBreath = rect.height;
                             b.minLeafSize = 6;
-                            b.maxLeafSize = 10;
+                            b.maxLeafSize = 8;
                             b.magnitude = 1;
                             b.offset = new Vector2(rect.x, rect.y);
 

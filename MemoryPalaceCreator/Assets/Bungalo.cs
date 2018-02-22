@@ -44,9 +44,6 @@ public class Bungalo : MonoBehaviour {
        
         CreateGrid();
 
-        //root.x += (int)offset.x;
-        //root.y += (int)offset.y;
-
         DL1 = new List<Line>();
         bspRects = new List<Rectangle>();
         halls = new List<Rectangle>();
@@ -76,6 +73,7 @@ public class Bungalo : MonoBehaviour {
     {
         foreach (Room r in rooms)
         {
+            
             r.offset = offset;
             r.Create(root);
             foreach (Wall w in r.insideWalls)
@@ -83,14 +81,48 @@ public class Bungalo : MonoBehaviour {
                 bungaloObjs.Add(w.obj);
                 if(w.outsideObj!=null)
                     bungaloObjs.Add(w.outsideObj);
+                if (w.outsideDoor != null)
+                    bungaloObjs.Add(w.outsideDoor);
             }
 
             bungaloObjs.Add(r.floor.obj);
             bungaloObjs.Add(r.ceiling.obj);
-
         }
 
         Rectangle box = new Rectangle(root.x, root.y, root.width, root.height);
+
+        List<Rectangle> doorways = new List<Rectangle>();
+        Wall roof = new Wall(eWall.Roof, box, doorways);
+        roof.Create(box);
+        bungaloObjs.Add(roof.obj);
+
+        //create corners
+        GameObject c1= new GameObject("C1");
+        c1.transform.position = new Vector3(root.x-.25f, 0, root.y-0.25f);
+        c1.AddComponent<Corner_Gen>().Build();
+        bungaloObjs.Add(c1);
+
+        GameObject c2 = new GameObject("C2");
+        c2.transform.position = new Vector3(root.x + root.width+0.25f, 0, root.y-0.25f);
+        c2.AddComponent<Corner_Gen>().Build();
+        c2.transform.rotation *= Quaternion.AngleAxis(270.0f, transform.up);
+        bungaloObjs.Add(c2);
+
+
+        GameObject c3 = new GameObject("C3");
+        c3.transform.position = new Vector3(root.x-0.25f, 0, root.y + root.height+0.25f);
+        c3.AddComponent<Corner_Gen>().Build();
+        c3.transform.rotation *= Quaternion.AngleAxis(90.0f, transform.up);
+        bungaloObjs.Add(c3); 
+
+        GameObject c4 = new GameObject("C4");
+        c4.transform.position = new Vector3(root.x + root.width+0.25f, 0, root.y + root.height+0.25f);
+        c4.AddComponent<Corner_Gen>().Build();
+        c4.transform.rotation *= Quaternion.AngleAxis(180.0f, transform.up);
+        bungaloObjs.Add(c4);
+
+
+
 
 
     }
@@ -388,6 +420,8 @@ public class Doorway
 
 public class Wall
 {
+    public GameObject outsideDoor;
+
     public GameObject obj;
     public GameObject outsideObj;
 
@@ -425,9 +459,31 @@ public class Wall
             case eWall.Ceiling:
                 Ceiling(b);
                 break;
+            case eWall.Roof:
+                Roof(b);
+                break;
             default:
                 break;
         }
+    }
+
+    public void Roof(Rectangle b)
+    {
+        string name;
+        Vector3 pos;
+        Quaternion rot;
+        int width;
+        int height;
+
+        name = "Roof";
+        pos = rect.GetCenter3d() + Vector3.up * 3.01f ;
+
+        rot = Quaternion.AngleAxis(90.0f, Vector3.right);
+        width = rect.width+1;
+        height = rect.height + 1;
+
+
+        CreateWall(b, name, pos, rot, width, height, true, ref obj);
     }
 
     public void East(Rectangle b, int height)
@@ -449,6 +505,22 @@ public class Wall
             width = rect.height;
 
             CreateWall(b,name, pos, rot, width, height, false, ref outsideObj);
+
+
+            outsideDoor = new GameObject("Exit");
+            outsideDoor.transform.position = rect.East() + Vector3.up * 1f - Vector3.forward * (float)width /2.0f + Vector3.forward *  ((float)doorways[0].x + 0.5f);
+            Doorway_Gen e= outsideDoor.AddComponent<Doorway_Gen>();
+            e.Build();
+            outsideDoor.transform.rotation *= Quaternion.AngleAxis(270.0f, Vector3.up); 
+
+
+
+            Rectangle dw = doorways[0];
+            dw.x += 1;
+            doorways.Clear();
+            doorways.Add(dw);
+            
+
         }
 
         name   = "East Inside Wall";
@@ -572,7 +644,7 @@ public class Wall
         obj = new GameObject("Ceiling");
         WallMesh wallMesh = obj.AddComponent<WallMesh>();
         wallMesh.invert = true;
-        wallMesh.WallMeshContructor(rect.width - 1, rect.height - 1, 1, 1);
+        wallMesh.WallMeshContructor(rect.width-1 , rect.height-1 , 1, 1);
         obj.transform.rotation *= Quaternion.AngleAxis(270, Vector3.right);
         obj.transform.position = rect.Ceiling();
     }
