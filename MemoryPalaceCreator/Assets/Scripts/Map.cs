@@ -39,7 +39,10 @@ public class Map : MonoBehaviour {
             bspGrid.gridBreath = y;
             bspGrid.Init(minLeafSize, maxLeafSize, mag);
             bspGrid.CreateGrid();
-            bspGrid.CreateBuildings(bspGrid.root);
+
+
+            List<Vector3> doneAlready= new List<Vector3>();
+            bspGrid.CreateBuildings(bspGrid.root,ref doneAlready);
             
             //bspGrid.CreateRoads();
         }

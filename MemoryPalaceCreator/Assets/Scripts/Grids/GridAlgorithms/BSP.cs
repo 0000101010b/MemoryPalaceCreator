@@ -227,12 +227,18 @@ public class Leaf
             Vector2 roomSize;
             Vector2 roomPos;
             // the room can be between 3 x 3 tiles to the size of the leaf - 2.
-            roomSize = new Vector2(Random.Range(3, width - 2), Random.Range(3, height - 2));
-            // place the room within the Leaf, but don't put it right 
-            // against the side of the Leaf (that would merge rooms together)
-            roomPos = new Vector2(Random.Range(1, width - roomSize.x - 1), Random.Range(1, height - roomSize.y - 1));
-            room = new Rectangle(x + (int)roomPos.x, y + (int)roomPos.y, (int)roomSize.x, (int)roomSize.y);
-        }
+
+            Debug.Log(width);
+            Debug.Log(height);
+           
+
+                roomSize = new Vector2(Random.Range(3, width - 2), Random.Range(3, height - 2));
+                // place the room within the Leaf, but don't put it right 
+                // against the side of the Leaf (that would merge rooms together)
+                roomPos = new Vector2(Random.Range(1, width - roomSize.x - 1), Random.Range(1, height - roomSize.y - 1));
+                room = new Rectangle(x + (int)roomPos.x, y + (int)roomPos.y, (int)roomSize.x, (int)roomSize.y);
+            
+            }
     }
 }
 public class Rectangle
@@ -259,13 +265,36 @@ public class Rectangle
     {
         return new Vector3((float)x + (float)width, 0.0f, (float)y + (float)height / 2.0f);
     }
+    public Vector3 West()
+    {
+        return new Vector3((float)x, 0.0f, (float)y + (float)height / 2.0f);
+    }
+    public Vector3 North()
+    {
+        return new Vector3((float)x + (float)width/2.0f, 0.0f, (float)y + (float)height);
+    }
+    public Vector3 South()
+    {
+        return new Vector3((float)x + (float)width / 2.0f, 0.0f, (float)y);
+    }
+    public Vector3 Ceiling()
+    {
+        return new Vector3((float)x + (float)width / 2.0f, 3.0f, (float)y + (float)height / 2.0f);
+    }
 
     public eWall PointOnWall(Vector2 v)
     {
-
-
         if (x + width == v.x && y + height > v.y  && v.y > y)
             return eWall.East;
+
+        if (x == v.x && y + height > v.y && v.y > y)
+            return eWall.West;
+
+        if (y + height == v.y && v.x < x + width && v.x > x)
+            return eWall.North;
+
+        if (y == v.y && v.x < x + width && v.x > x)
+            return eWall.South;
 
         return eWall.Floor;
         /*

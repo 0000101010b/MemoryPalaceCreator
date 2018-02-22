@@ -74,32 +74,69 @@ public class BSPGrid : Grid {
 
     }
 
-    public void CreateBuildings(Leaf l)
+    public void CreateBuildings(Leaf l,ref List<Vector3> alreadyDone)
     {
+
         if (l != null)
         {
 
-            lines.Add(new Vector3(l.x, 0, l.y));
-            lines.Add(new Vector3(l.x + l.width, 0, l.y));
-
-            Rectangle rect = l.getRoom();
-            if (rect != null)
+            if (!alreadyDone.Contains(new Vector3(l.x, 0, l.y)))
             {
+                alreadyDone.Add(new Vector3(l.x, 0, l.y));
+                lines.Add(new Vector3(l.x, 0, l.y));
+                lines.Add(new Vector3(l.x + l.width, 0, l.y));
 
-                bool createdBefore = false;
-                for (int i = 0; i < posBuildings.Count; i++)
+                Rectangle rect = l.getRoom();
+                if (rect != null)
                 {
-                    if (Vector2.Distance(posBuildings[i],
-                        new Vector2(rect.x, rect.y))< 0.5f)
+
+                    bool createdBefore = false;
+                    for (int i = 0; i < posBuildings.Count; i++)
                     {
-                        createdBefore = true;
-                        break;
-                    }
-                
-                }
+                        if (Vector2.Distance(posBuildings[i],
+                            new Vector2(rect.x, rect.y)) < 0.5f)
+                        {
+                            createdBefore = true;
+                            break;
+                        }
 
-                if (!createdBefore)
-                {
+                    }
+
+                    if (!createdBefore)
+                    {
+                        if (UnityEngine.Random.Range(0,2)>0) {
+                            GameObject bungaloObj = new GameObject("Bungalo");
+
+                            Bungalo b = bungaloObj.AddComponent<Bungalo>();
+                            b.gridWidth = rect.width;
+                            b.gridBreath = rect.height;
+                            b.minLeafSize = 6;
+                            b.maxLeafSize = 10;
+                            b.magnitude = 1;
+                            b.offset = new Vector2(rect.x, rect.y);
+
+
+
+                            b.MakeBungalo();
+                            foreach (GameObject g in b.bungaloObjs)
+                            {
+                                g.transform.SetParent(bungaloObj.transform);
+                            }
+                        }else
+                        {
+                            GameObject shedGameobject = new GameObject("Shed");
+                            Shed shed = shedGameobject.AddComponent<Shed>();
+                            shed.shedGameobject = shedGameobject;
+                            posBuildings.Add(new Vector2(rect.x, rect.y));
+                            int floors = UnityEngine.Random.Range(1, 1);
+                            shed.ShedConstructor(new Vector3(rect.x, 0, rect.y), new Vector2(rect.height, rect.width), Vector3.forward, Vector3.right, 3.0f * floors);
+                            shed.shedGameobject.transform.SetParent(transform);
+                        }
+
+
+
+                    }
+                    /*     
                     GameObject shedGameobject = new GameObject("Shed");
                     Shed shed=shedGameobject.AddComponent<Shed>();
                     shed.shedGameobject = shedGameobject;
@@ -107,20 +144,22 @@ public class BSPGrid : Grid {
                     int floors = UnityEngine.Random.Range(1, 1);
                     shed.ShedConstructor(new Vector3(rect.x, 0, rect.y), new Vector2(rect.height, rect.width), Vector3.forward, Vector3.right, 3.0f * floors);
                     shed.shedGameobject.transform.SetParent(transform);
+                    */
+
                 }
+
+
+
+
+                lines.Add(new Vector3(l.x + l.width, 0, l.y + l.height));
+                lines.Add(new Vector3(l.x, 0, l.y + l.height));
             }
-
-
-                   
-            lines.Add(new Vector3(l.x + l.width, 0, l.y + l.height));
-            lines.Add( new Vector3(l.x, 0, l.y + l.height));
- 
     
         }
         if (l.leftChild != null || l.rightChild != null)
         {
-            CreateBuildings(l.leftChild);
-            CreateBuildings(l.rightChild);
+            CreateBuildings(l.leftChild,ref alreadyDone);
+            CreateBuildings(l.rightChild,ref alreadyDone);
         }
       
     }

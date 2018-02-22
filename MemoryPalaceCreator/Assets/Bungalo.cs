@@ -7,7 +7,7 @@ public class Bungalo : MonoBehaviour {
 
 
     //GameObjects
-    private List<GameObject> bungaloObjs;
+    public List<GameObject> bungaloObjs;
 
     //Debug Lines
     public List<Line> DL1;
@@ -19,6 +19,7 @@ public class Bungalo : MonoBehaviour {
     public int minLeafSize;
     public int maxLeafSize;
     public float magnitude;
+    public Vector2 offset;
 
 
     //contruction objects
@@ -37,13 +38,14 @@ public class Bungalo : MonoBehaviour {
     }
 
     // Use this for initialization
-    void MakeBungalo () {
+    public void MakeBungalo () {
 
         doorLocations = new Dictionary<Vector2,Vector3>();
        
-
-
         CreateGrid();
+
+        //root.x += (int)offset.x;
+        //root.y += (int)offset.y;
 
         DL1 = new List<Line>();
         bspRects = new List<Rectangle>();
@@ -60,14 +62,12 @@ public class Bungalo : MonoBehaviour {
         GetHallsAndLines(root);
         FindDoors();
         SetDoorPositions();
+
         FindRoomCenters();
-
-
-
-
-
         Create();
 
+        foreach (GameObject g in bungaloObjs)
+            g.transform.position = g.transform.position + new Vector3(offset.x,0,offset.y);
     }
 
 
@@ -75,8 +75,36 @@ public class Bungalo : MonoBehaviour {
     void Create()
     {
         foreach (Room r in rooms)
-            r.Create();
+        {
+            r.offset = offset;
+            r.Create(root);
+            foreach (Wall w in r.insideWalls)
+            {
+                bungaloObjs.Add(w.obj);
+                if(w.outsideObj!=null)
+                    bungaloObjs.Add(w.outsideObj);
+            }
+
+            bungaloObjs.Add(r.floor.obj);
+            bungaloObjs.Add(r.ceiling.obj);
+
+        }
+
+        Rectangle box = new Rectangle(root.x, root.y, root.width, root.height);
+
+
     }
+
+    void CreateWall2(Vector3 pos)
+    {
+        GameObject g = new GameObject("corner1");
+        WallMesh wallMesh = g.AddComponent<WallMesh>();
+        //wallMesh.invert = invert;
+        wallMesh.WallMeshContructor(.5f, 3.0f, 0.5f, 0.5f);
+        g.transform.rotation *= Quaternion.identity;
+        g.transform.position = pos;
+    }
+
 
     void FindRoomCenters()
     {
@@ -205,16 +233,19 @@ public class Bungalo : MonoBehaviour {
 
     void Draw2()
     {
+
+        Vector3 o = new Vector3(offset.x, 0, offset.y);
+
         Gizmos.color = Color.black;
         if (bspRects != null)
         {
             foreach (Rectangle r in bspRects)
             {
-                Gizmos.DrawLine(new Vector3(r.x, 0, r.y), new Vector3(r.x + r.width, 0, r.y));
-                Gizmos.DrawLine(new Vector3(r.x, 0, r.y), new Vector3(r.x, 0, r.y + r.height));
+                Gizmos.DrawLine(new Vector3(r.x, 0, r.y)+o, new Vector3(r.x + r.width, 0, r.y)+o);
+                Gizmos.DrawLine(new Vector3(r.x, 0, r.y)+o, new Vector3(r.x, 0, r.y + r.height)+o);
 
-                Gizmos.DrawLine(new Vector3(r.x + r.width, 0, r.y + r.height), new Vector3(r.x + r.width, 0, r.y));
-                Gizmos.DrawLine(new Vector3(r.x + r.width, 0, r.y + r.height), new Vector3(r.x, 0, r.y + r.height));
+                Gizmos.DrawLine(new Vector3(r.x + r.width, 0, r.y + r.height)+o, new Vector3(r.x + r.width, 0, r.y)+o);
+                Gizmos.DrawLine(new Vector3(r.x + r.width, 0, r.y + r.height)+o, new Vector3(r.x, 0, r.y + r.height)+o);
             }
         }
 
@@ -223,11 +254,11 @@ public class Bungalo : MonoBehaviour {
         {
             foreach (Rectangle h in halls)
             {
-                Gizmos.DrawLine(new Vector3(h.x, 0, h.y), new Vector3(h.x + h.width, 0, h.y));
-                Gizmos.DrawLine(new Vector3(h.x, 0, h.y), new Vector3(h.x, 0, h.y + h.height));
+                Gizmos.DrawLine(new Vector3(h.x, 0, h.y)+o, new Vector3(h.x + h.width, 0, h.y)+o);
+                Gizmos.DrawLine(new Vector3(h.x, 0, h.y)+o, new Vector3(h.x, 0, h.y + h.height)+o);
 
-                Gizmos.DrawLine(new Vector3(h.x + h.width, 0, h.y + h.height), new Vector3(h.x + h.width, 0, h.y));
-                Gizmos.DrawLine(new Vector3(h.x + h.width, 0, h.y + h.height), new Vector3(h.x, 0, h.y + h.height));
+                Gizmos.DrawLine(new Vector3(h.x + h.width, 0, h.y + h.height)+o, new Vector3(h.x + h.width, 0, h.y)+o);
+                Gizmos.DrawLine(new Vector3(h.x + h.width, 0, h.y + h.height)+o, new Vector3(h.x, 0, h.y + h.height)+o);
             }
         }
     }
@@ -237,18 +268,19 @@ public class Bungalo : MonoBehaviour {
         Draw2();
 
         Gizmos.color = Color.red;
+        Vector3 o = new Vector3(offset.x,0, offset.y);
 
         foreach (Line l in DL1)
-            Gizmos.DrawLine(new Vector3(l.s.x,0,l.s.y), new Vector3(l.e.x, 0, l.e.y));
+            Gizmos.DrawLine(new Vector3(l.s.x,0,l.s.y)+o , new Vector3(l.e.x, 0, l.e.y)+o);
 
 
         foreach (KeyValuePair<Vector2,Vector3> v in doorLocations)
-            Gizmos.DrawWireSphere(new Vector3(v.Key.x,0,v.Key.y), 0.1f);
+            Gizmos.DrawWireSphere(new Vector3(v.Key.x,0,v.Key.y)+o, 0.1f);
 
 
         Gizmos.color = Color.green;
         foreach(Room r in rooms)
-            Gizmos.DrawWireSphere(new Vector3(r.Center.x, 0, r.Center.y), 0.1f);
+            Gizmos.DrawWireSphere(new Vector3(r.Center.x, 0, r.Center.y)+o, 0.1f);
 
         //Draw(root);
     }
@@ -289,7 +321,7 @@ public class Bungalo : MonoBehaviour {
 
         root.createRooms();
     }
-
+    /*
     void Draw(Leaf l)
     {
 
@@ -329,7 +361,7 @@ public class Bungalo : MonoBehaviour {
             Draw(l.rightChild);
         }
 
-    }
+    }*/
     // Update is called once per frame
 
     void Update () {
@@ -356,6 +388,9 @@ public class Doorway
 
 public class Wall
 {
+    public GameObject obj;
+    public GameObject outsideObj;
+
     public eWall directionFacing;
     public Rectangle rect;
     public List<Rectangle> doorways;
@@ -368,62 +403,190 @@ public class Wall
         this.doorways = _doorways;
     }
 
-    public void Create()
+    public void Create(Rectangle b)
     {
         switch(directionFacing)
         {
             case eWall.Floor:
-                Floor();
+                Floor(b);
+                break;
+            case eWall.West:
+                West(b,3);
                 break;
             case eWall.East:
-                East();
+                East(b,3);
+                break;
+            case eWall.North:
+                North(b,3);
+                break;
+            case eWall.South:
+                South(b,3);
+                break;
+            case eWall.Ceiling:
+                Ceiling(b);
                 break;
             default:
                 break;
-
-               
         }
     }
-    public void East()
+
+    public void East(Rectangle b, int height)
     {
-        GameObject wall = new GameObject("East Inside Wall");
-        WallMesh wallMesh = wall.AddComponent<WallMesh>();
-        wallMesh.invert = true;
+        string name;
+        Vector3 pos;
+        Quaternion rot;
+        int width;
+
+        if (b.PointOnWall(new Vector2(this.rect.East().x, this.rect.East().z)) == eWall.East)
+        {
+            doorways = new List<Rectangle>();
+            doorways.Add(new Rectangle((int)2, 0, 1, 2));
+
+            name = "East Inside Wall";
+            pos = rect.East() + Vector3.up * 1.5f + Vector3.right * 0.5f;
+         
+            rot = Quaternion.AngleAxis(270.0f, Vector3.up);
+            width = rect.height;
+
+            CreateWall(b,name, pos, rot, width, height, false, ref outsideObj);
+        }
+
+        name   = "East Inside Wall";
+        pos   =  rect.East() + Vector3.up * 1.5f + Vector3.right * -0.5f;
+      
+        rot = Quaternion.AngleAxis(90.0f, Vector3.up);
+        width=rect.height;
+      
+
+        CreateWall(b,name, pos,rot,width,height,true, ref obj);
+
+      
+    }
+
+    public void CreateWall(Rectangle b,string name,Vector3 pos,Quaternion rot, int width,int height, bool invert,ref GameObject g)
+    {
+        g = new GameObject(name);
+        WallMesh wallMesh = g.AddComponent<WallMesh>();
+        wallMesh.invert = invert;
 
         if (doorways != null)
         {
             for (int i = 0; i < doorways.Count; i++)
             {
-
-
-                wallMesh.rect = new Vector2(doorways[i].x,doorways[i].y);
+                wallMesh.rect = new Vector2(doorways[i].x, doorways[i].y);
                 wallMesh.rectH = doorways[i].height;
                 wallMesh.rectW = doorways[i].width;
             }
         }
-        wallMesh.WallMeshContructor(rect.height , 3, 1, 1);
-        wall.transform.rotation *= Quaternion.AngleAxis(90.0f, Vector3.up);
 
-
-
-        wall.transform.position = wall.transform.position + rect.East() + Vector3.up *1.5f;
+        wallMesh.WallMeshContructor(width, height, 1, 1);
+        g.transform.rotation *= rot;
+        //pos += new Vector3(b.x, 0, b.y);
+        g.transform.position  = pos;
     }
 
-    public void Floor()
+    public void West(Rectangle b, int height)
     {
-        GameObject wall = new GameObject("Floor");
-        WallMesh wallMesh = wall.AddComponent<WallMesh>();
+        string name = "West Inside Wall";
+        Vector3 pos = rect.West() + Vector3.up * 1.5f + Vector3.right * 0.5f;
+        Quaternion rot = Quaternion.AngleAxis(270.0f, Vector3.up);
+        int width = rect.height;
+       // int height = 3;
+        bool invert = false;
+
+        CreateWall(b,name, pos, rot, width, height, invert, ref obj);
+
+        if (b.PointOnWall(new Vector2(this.rect.West().x, this.rect.West().z)) == eWall.West)
+        {
+            name = "West outside Wall";
+            pos = rect.West() + Vector3.up * 1.5f + Vector3.right * -0.5f;
+            rot = Quaternion.AngleAxis(90.0f, Vector3.up);
+            width = rect.height;
+            //height = 3;
+            invert = true;
+
+            CreateWall(b,name, pos, rot, width, height, invert, ref outsideObj);
+        }
+    }
+
+    public void North(Rectangle b, int height)
+    {
+        string name = "North Inside Wall";
+        Vector3 pos = rect.North() + Vector3.up * 1.5f + Vector3.forward * -0.5f;
+        Quaternion rot = Quaternion.identity;
+        int width = rect.width;
+        //int height = 3;
+        bool invert = false;
+
+        CreateWall(b,name, pos, rot, width, height, invert, ref obj);
+
+        if (b.PointOnWall(new Vector2(this.rect.North().x, this.rect.North().z)) == eWall.North)
+        {
+            name = "North outside Wall";
+            pos = rect.North() + Vector3.up * 1.5f + Vector3.forward * 0.5f;
+            rot = Quaternion.AngleAxis(180.0f, Vector3.up);
+            width = rect.width;
+            //height = 3;
+            invert = true;
+
+            CreateWall(b,name, pos, rot, width, height, invert, ref outsideObj);
+        }
+    }
+    public void South(Rectangle b,int height)
+    {
+        string name = "South Inside Wall";
+        Vector3 pos = rect.South() + Vector3.up * 1.5f + Vector3.forward * 0.5f;
+        Quaternion rot = Quaternion.AngleAxis(180.0f, Vector3.up);
+        int width = rect.width;
+        
+        bool invert = true;
+
+        CreateWall(b,name, pos, rot, width, height, invert, ref obj);
+
+        if (b.PointOnWall(new Vector2(this.rect.South().x, this.rect.South().z)) == eWall.South)
+        {
+            name = "North outside Wall";
+            pos = rect.South() + Vector3.up * 1.5f + Vector3.forward * -0.5f;
+            rot = Quaternion.identity;
+            width = rect.width;
+            //height = 3;
+            invert = false;
+
+            CreateWall(b,name, pos, rot, width, height, invert, ref outsideObj);
+        }
+
+
+    }
+
+    public void Floor(Rectangle b)
+    {
+        obj = new GameObject("Floor");
+        WallMesh wallMesh = obj.AddComponent<WallMesh>();
         wallMesh.invert = false;
         wallMesh.WallMeshContructor(rect.width-1, rect.height-1, 1, 1);
-        wall.transform.rotation *= Quaternion.AngleAxis(90, Vector3.right);
-        wall.transform.position = wall.transform.position + rect.GetCenter3d();
+        obj.transform.rotation *= Quaternion.AngleAxis(90, Vector3.right);
+        obj.transform.position =  rect.GetCenter3d() +new Vector3(0,0.01f);
+    }
+    public void Ceiling(Rectangle b)
+    {
+        obj = new GameObject("Ceiling");
+        WallMesh wallMesh = obj.AddComponent<WallMesh>();
+        wallMesh.invert = true;
+        wallMesh.WallMeshContructor(rect.width - 1, rect.height - 1, 1, 1);
+        obj.transform.rotation *= Quaternion.AngleAxis(270, Vector3.right);
+        obj.transform.position = rect.Ceiling();
     }
 }
 
 public class Room
 {
-    public List<Wall> walls;
 
+    public Wall ceiling;
+    public Wall floor;
+
+    public List<Wall> insideWalls;
+
+    public Vector2 offset;
     private Vector2 center;
     private Rectangle rect;
 
@@ -454,14 +617,16 @@ public class Room
 
     public Room(Rectangle r, List<Vector2> doorways)
     {
+       
         this.center = r.GetCenter();
-        this.rect = r;
-
-        walls = new List<Wall>();
-        //walls.Add(new Wall(eWall.Floor, r, r));
+        this.rect = r;  
 
         List<Rectangle> eastDoorways = new List<Rectangle>();
+        List<Rectangle> westDoorways = new List<Rectangle>();
         List<Rectangle> northDoorways = new List<Rectangle>();
+        List<Rectangle> southDoorways = new List<Rectangle>();
+        List<Rectangle> holeInFloor = new List<Rectangle>();
+        List<Rectangle> holeInCeiling = new List<Rectangle>();
 
         foreach (Vector2 v in doorways)
         {
@@ -472,34 +637,58 @@ public class Room
                 case eWall.East:
                     eastDoorways.Add(new Rectangle((int)(v.y + 0.5f) - rect.y, 0, 1, 2));
                     break;
+                case eWall.West:
+                    westDoorways.Add(new Rectangle((int)(v.y - 0.5f) - rect.y, 0, 1, 2));
+                    break;
                 case eWall.North:
-                    northDoorways.Add(new Rectangle((int)(v.y + 0.5f) - rect.y, 0, 1, 2));
+                    northDoorways.Add(new Rectangle((int)(v.x - 0.5f) - rect.x, 0, 1, 2));
+                    break;
+                case eWall.South:
+                    southDoorways.Add(new Rectangle((int)(v.x + 0.5f) - rect.x, 0, 1, 2));
                     break;
                 default:
                     break;
 
-            {
-
             }
-            /*if (rect.PointOnWall(v) == eWall.East)
-            {
-                eastDoorways.Add(new Rectangle((int)(v.y + 0.5f) - rect.y, 0, 1, 2));
-            }*/
-
-            }
-
         }
 
 
-        walls.Add(new Wall(eWall.East, r, eastDoorways));
+        floor   = new Wall(eWall.Floor, r, holeInFloor);
+        ceiling = new Wall(eWall.Ceiling, r, holeInCeiling);
 
-      
+
+        insideWalls = new List<Wall>();
+        insideWalls.Add(new Wall(eWall.East, r, eastDoorways));
+        insideWalls.Add(new Wall(eWall.West, r, westDoorways));
+        insideWalls.Add(new Wall(eWall.North, r, northDoorways));
+        insideWalls.Add(new Wall(eWall.South, r, southDoorways));
+
     }
 
-    public void Create()
+    public void Create(Leaf l)
     {
-        foreach (Wall wall in walls)
-            wall.Create();
+        Rectangle b = new Rectangle(l.x, l.y, l.width, l.height);
 
+        floor.Create(b);
+        floor.obj.AddComponent<MeshCollider>();
+        //floor.obj.transform.position = floor.obj.transform.position + new Vector3(offset.x,0,offset.y);
+
+        ceiling.Create(b);
+        //ceiling.obj.transform.position = ceiling.obj.transform.position + new Vector3(offset.x,0, offset.y);
+        ceiling.obj.AddComponent<MeshCollider>();
+
+        foreach (Wall wall in insideWalls)
+        {
+            wall.Create(b);
+            wall.obj.AddComponent<MeshCollider>();
+            //wall.obj.transform.position = wall.obj.transform.position + new Vector3(offset.x,0, offset.y);
+            if (wall.outsideObj != null)
+            {
+                wall.outsideObj.AddComponent<MeshCollider>();
+            //    wall.outsideObj.transform.position = wall.outsideObj.transform.position + new Vector3(offset.x,0, offset.y);
+            }
+        }
+
+       
     }
 }
