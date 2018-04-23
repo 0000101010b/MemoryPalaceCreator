@@ -78,7 +78,6 @@ public class BSPGrid : Grid {
 
     public void CreateBuildings(Leaf l)
     {
-       // Gizmos.color = Color.black;
         if (l != null)
         {
 
@@ -114,25 +113,11 @@ public class BSPGrid : Grid {
             }
 
 
-            /*
-            GameObject road = new GameObject("Road");
-            WallMesh r = road.AddComponent<WallMesh>();
-            Vector3 to = new Vector3(l.x, 0, l.y) - new Vector3(l.x + l.width, 0, l.y);
-            Vector3 mid=(new Vector3(l.x, 0, l.y) + new Vector3(l.x + l.width, 0, l.y)) / 2;
-            r.transform.position=mid;
-            r.floorMeshConstructor(to.magnitude, 1, 1, 1);
- */           
+                   
             lines.Add(new Vector3(l.x + l.width, 0, l.y + l.height));
             lines.Add( new Vector3(l.x, 0, l.y + l.height));
  
-        /*
-            
-            Gizmos.DrawLine(new Vector3(l.x, 0, l.y), new Vector3(l.x + l.width, 0, l.y));
-            Gizmos.DrawLine(new Vector3(l.x, 0, l.y), new Vector3(l.x, 0, l.y + l.height));
-
-            Gizmos.DrawLine(new Vector3(l.x + l.width, 0, l.y + l.height), new Vector3(l.x + l.width, 0, l.y));
-            Gizmos.DrawLine(new Vector3(l.x + l.width, 0, l.y + l.height), new Vector3(l.x, 0, l.y + l.height));
-            */
+    
         }
         if (l.leftChild != null || l.rightChild != null)
         {
@@ -157,6 +142,7 @@ public class BSPGrid : Grid {
             Vector3 mid = (lines[i] + lines[i+1]) / 2;
             r.transform.position = mid;
             r.floorMeshConstructor(to.magnitude, UnityEngine.Random.Range(1,4), 1, 1);
+            road.transform.position = road.transform.position+new Vector3(0,0.01f);
         }
     }
     public void CreateBuildings()

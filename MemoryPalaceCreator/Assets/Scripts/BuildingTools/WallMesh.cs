@@ -20,6 +20,7 @@ public class WallMesh : MonoBehaviour
     [Header("Debug Options")]
     public bool isDebugMode = false;
 
+    public bool invert = true;
 
     public void WallMeshContructor(float _xMagnitude,float _yMagnitude,float _xDivideBy,float _yDivideBy)
     {
@@ -162,61 +163,40 @@ public class WallMesh : MonoBehaviour
         List<int> triangles = new List<int>();
         //remove triangles if they're inside cut out shapes
 
+        Vector2 lRect;
+        lRect.y = rect.y - (yMagnitude / 2);
+
+        lRect.x = rect.x - (xMagnitude / 2);
+
+    
+        if (invert)
+            lRect.x = (xMagnitude - rect.x - rectW + xDividedBy) - (xMagnitude / 2);
 
 
 
         for (int i = 0; i < vertices.Count - columnLenght-2; i++)
          {
-            /*
-             if (!(vertices[i].x > rect.x - xDividedBy &&
-                 vertices[i].x < (rect.x + rectW) &&
-                 vertices[i].y > rect.y - yDividedBy &&
-                 vertices[i].y < (rect.y + rectH))
-                 && ((i + 1) % (columnLenght + 1) != 0))
-             {
-                 //triangle 1 left
-                 triangles.Add(i);//current
-                 triangles.Add(i + 1);//
-                 triangles.Add(i + columnLenght + 1);//(1,1) away
+            Vector3 v = vertices[i];
 
-                 //triangle 2 right
-                 triangles.Add(i + 1);//current
-                 triangles.Add(i + columnLenght + 2);//
-                 triangles.Add(i + columnLenght + 1);
-             }
-             */
-
-            Vector2 localRect;
-            localRect.y=rect.y - yMagnitude / 2;
-            localRect.x=rect.x - xMagnitude / 2;
-
-            if(!(vertices[i].x > localRect.x - xDividedBy &&
-                 vertices[i].x < (localRect.x + rectW) &&
-                 vertices[i].y > localRect.y - yDividedBy &&
-                 vertices[i].y < (localRect.y + rectH))
-                 && (i + 1) % (columnLenght + 1) != 0)
+            if (!(v.x >  lRect.x - xDividedBy &&
+                  v.x <  lRect.x + rectW &&
+                  v.y >  lRect.y - yDividedBy &&
+                  v.y <  lRect.y + rectH)
+                  && (i + 1) % (columnLenght + 1) != 0)
             {
-                
+
                 triangles.Add(i);//current
                 triangles.Add(i + 1);//
                 triangles.Add(i + columnLenght + 1);//(1,1) away
-                
+
                 //triangle 2 right
                 triangles.Add(i + 1);//current
                 triangles.Add(i + columnLenght + 2);//
                 triangles.Add(i + columnLenght + 1);
-                
-                /*
-                triangles.Add(i);//current
-                triangles.Add(i + 1);//
-                triangles.Add(i + columnLenght+2);//(1,1) away
 
-                //triangle 2 right
-                triangles.Add(i + 1);//current
-                triangles.Add(i + columnLenght);//
-                triangles.Add(i + columnLenght + 2);*/
+
             }
-         }
+        }
 
         verties = vertices;
         this.triangles = triangles.ToArray();
@@ -233,6 +213,8 @@ public class WallMesh : MonoBehaviour
 
         //set mesh Filter
         mf.mesh = m;
+
+        
     }
 
     public void SetWallTexture(Color c)

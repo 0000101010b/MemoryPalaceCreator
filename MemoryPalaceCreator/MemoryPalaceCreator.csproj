@@ -84,7 +84,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Border.cs" />
+    <Compile Include="Assets\CreateTriangle.cs" />
     <Compile Include="Assets\Libraries\MyVector3Lib.cs" />
+    <Compile Include="Assets\MapCamera.cs" />
     <Compile Include="Assets\Other\BackgroundSpace.cs" />
     <Compile Include="Assets\Other\CameraFollow.cs" />
     <Compile Include="Assets\Other\CircleFractal.cs" />
@@ -101,11 +104,14 @@
     <Compile Include="Assets\Other\PlayerMovement.cs" />
     <Compile Include="Assets\Other\PythagorousTree.cs" />
     <Compile Include="Assets\Other\SineWave.cs" />
+    <Compile Include="Assets\playerMapPosition.cs" />
+    <Compile Include="Assets\Prefabs.cs" />
     <Compile Include="Assets\Procedural\Trees.cs" />
     <Compile Include="Assets\Scripts\Buildings\Buildings.cs" />
     <Compile Include="Assets\Scripts\Buildings\Residential.cs" />
     <Compile Include="Assets\Scripts\Buildings\Residential\Shed.cs" />
     <Compile Include="Assets\Scripts\Buildings\Residential\ThatchedHouse.cs" />
+    <Compile Include="Assets\Scripts\BuildingTools\Doorway.cs" />
     <Compile Include="Assets\Scripts\BuildingTools\WallMesh.cs" />
     <Compile Include="Assets\Scripts\Grids\BSPGrid.cs" />
     <Compile Include="Assets\Scripts\Grids\Grid.cs" />

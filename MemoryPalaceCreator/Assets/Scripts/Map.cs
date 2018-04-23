@@ -40,6 +40,8 @@ public class Map : MonoBehaviour {
             bspGrid.Init(minLeafSize, maxLeafSize, mag);
             bspGrid.CreateGrid();
             bspGrid.CreateBuildings(bspGrid.root);
+            
+            //bspGrid.CreateRoads();
         }
 
         if (grid is PolyGrid)
