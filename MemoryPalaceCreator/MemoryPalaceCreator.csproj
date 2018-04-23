@@ -86,8 +86,12 @@
   <ItemGroup>
     <Compile Include="Assets\Border.cs" />
     <Compile Include="Assets\CreateTriangle.cs" />
+    <Compile Include="Assets\EditMP_Obj.cs" />
+    <Compile Include="Assets\EditMPobj.cs" />
+    <Compile Include="Assets\InterfaceSelect.cs" />
     <Compile Include="Assets\Libraries\MyVector3Lib.cs" />
     <Compile Include="Assets\MapCamera.cs" />
+    <Compile Include="Assets\MPobj.cs" />
     <Compile Include="Assets\Other\BackgroundSpace.cs" />
     <Compile Include="Assets\Other\CameraFollow.cs" />
     <Compile Include="Assets\Other\CircleFractal.cs" />
@@ -117,6 +121,7 @@
     <Compile Include="Assets\Scripts\Grids\Grid.cs" />
     <Compile Include="Assets\Scripts\Grids\GridAlgorithms\BSP.cs" />
     <Compile Include="Assets\Scripts\Grids\PolyGrid.cs" />
+    <Compile Include="Assets\Scripts\imageScraper2.cs" />
     <Compile Include="Assets\Scripts\Map.cs" />
   </ItemGroup>
   <ItemGroup>
