@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Doorway : MonoBehaviour {
+public class Doorway_Gen : MonoBehaviour {
 
 
     GameObject left;

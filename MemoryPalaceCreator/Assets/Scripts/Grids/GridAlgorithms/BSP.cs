@@ -246,6 +246,51 @@ public class Rectangle
         width = _width;
         height = _height;
     }
+
+    public Vector2 GetCenter()
+    {
+        return new Vector2((float)x + (float)width / 2.0f, (float)y + (float)height / 2.0f); 
+    }
+    public Vector3 GetCenter3d()
+    {
+        return new Vector3((float)x + (float)width / 2.0f,0.0f, (float)y + (float)height / 2.0f);
+    }
+    public Vector3 East()
+    {
+        return new Vector3((float)x + (float)width, 0.0f, (float)y + (float)height / 2.0f);
+    }
+
+    public eWall PointOnWall(Vector2 v)
+    {
+
+
+        if (x + width == v.x && y + height > v.y  && v.y > y)
+            return eWall.East;
+
+        return eWall.Floor;
+        /*
+        //cheat for doors
+        if (x == v.x ||
+           y == v.y  ||
+           x + width  == v.x ||
+           y + height == v.y)
+            return true;
+        else
+            return false;
+    */
+    }
+
+    public bool PointInRect(Vector2 v)
+    {
+        if (x < v.x &&
+           y < v.y &&
+           x + width > v.x &&
+           y + height > v.y)
+            return true;
+        else
+            return false;
+
+    }
 }
 
 public class BSP : MonoBehaviour {
